@@ -1,0 +1,30 @@
+<!-- <ng-include src="'views/anime-nav.html'"></ng-include> -->
+
+<!-- Code for Iframe embed -->
+<div class="btn-group" role="group"> 
+  <!-- Left 1 Button -->
+  <button class="btn btn-default" type="button" ng-disabled="!vm.previousEpisode"
+          go-click="/animes/{{vm.previousEpisode.Title}}/{{vm.previousEpisode._id}}" >
+    <span class="glyphicon glyphicon-arrow-left"></span>
+  </button>
+  
+  <!-- drop down menu -->
+  <button class="btn btn-default dropdown-toggle" id="episode-dropdown" type="button" data-toggle="dropdown">
+    {{vm.episode.EpisodeNumber}}
+    <span class="caret"></span>
+  </button>
+    <ul class="dropdown-menu">
+      <li ng-repeat="episode in vm.episodeList">
+        <a ng-href="#/animes/{{episode.Title}}/{{episode._id}}">{{episode.EpisodeNumber}}</a>
+      </li>
+    </ul>
+
+  <!-- Right 1 Button -->
+  <button class="btn btn-default" type="button" ng-disabled="!vm.nextEpisode"
+          go-click="/animes/{{vm.nextEpisode.Title}}/{{vm.nextEpisode._id}}" >
+    <span class="glyphicon glyphicon-arrow-right"></span>
+  </button>
+</div>
+<div>
+  <p><youtube src="vm.episode.EmbedUrl"></youtube></p>
+</div>

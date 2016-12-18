@@ -1,0 +1,29 @@
+<!-- this will be the defulat page - All anime will be on another -->
+<table class="table table-striped" >
+    <thead>
+        <th>Unseen</th>
+        <th>Title</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <tr ng-repeat="anime in vm.animes | orderBy: ['-Following', '-UnseenCount','Title'] | filter: vm.filter">
+            <td>
+                <a class="btn">
+                    <span ng-if="anime.UnseenCount > 0" class="badge">{{anime.UnseenCount}}</span> 
+                </a>
+            </td>
+            <td>
+                
+                <a ng-href="/#/animes/{{ anime.Title }}">{{anime.Title}}</a>
+            </td>
+            <td>
+                <div class="button-group">
+                     <!--glyphicon glyphicon-heart-empty /  glyphicon glyphicon-heart-->
+                    <a class="btn" ng-click="vm.toggleFollow(anime.Title);" title="Follow this show">
+                        <span ng-class="{'glyphicon glyphicon-heart' : anime.Following == true, 'glyphicon glyphicon-heart-empty' : anime.Following == false}"></span>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

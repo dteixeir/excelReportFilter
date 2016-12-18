@@ -1,0 +1,37 @@
+<table class="table table-striped" >
+    <thead>
+        <th>Title</th>
+        <th class="btn-default" ng-click="vm.toggleEpisodeOrder()">Episode Number 
+            <span ng-class="{'glyphicon glyphicon-sort-by-attributes-alt' : vm.episodeDesc == true, 'glyphicon glyphicon-sort-by-attributes' : vm.episodeDesc == false}"></span>
+        </th>
+    </thead>
+    <tbody>
+        <tr ng-repeat="episode in vm.episodes | orderBy:EpisodeNumber:vm.episodeDesc">
+            <td>
+                <a ng-click="vm.setWatchedEpisode(episode._id)" ng-href="/#/animes/{{vm.title}}/{{ episode._id}}">
+                    {{::vm.title}}
+                </a>
+            </td>
+            <td>
+                 <a class="btn" ng-click="vm.setWatchedEpisode(episode._id)" ng-href="/#/animes/{{vm.title}}/{{ episode._id}}">
+                    {{::episode.EpisodeNumber}}
+                 </a>
+
+                 <!-- couldn't get ng-class to work - current work around -->
+                 <span ng-click="vm.toggleWatched(episode._id)" ng-style="{ 'color' : (episode.Watched == true) ? 'black' : 'lightGrey' }">
+                    <span class="btn glyphicon glyphicon-eye-open"></span>
+                 </span>
+                <!-- keep these for later! New Icon!!!!
+                <div class="button-group">
+                    <a ng-href="/#/animes/{{episode._id}}/edit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                    <a ng-href="/#/animes/{{episode.Title}}/delete" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove-circle"></span>
+                    </a>
+                </div>
+                -->
+            </td>
+        </tr>
+    </tbody>
+</table>
