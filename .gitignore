@@ -1,0 +1,13 @@
+#directories
+bower_components
+node_modules
+dist
+.vscode
+release
+.tmp
+build
+**/write.json
+
+#files
+*.tgz
+*.log
