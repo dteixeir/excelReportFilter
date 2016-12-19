@@ -9,10 +9,7 @@
   angular.module('clientApp', [
     'ngRoute',
     'ngResource',
-    'clientApp.component',
-    'clientApp.api',
-    'clientApp.directive',
-    'clientApp.filter'
+    'clientApp.component'
   ]);
 
 }());

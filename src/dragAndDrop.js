@@ -2,7 +2,6 @@
   const xlsx = require('xlsx');
   var fs = require('fs');
   var util = require('util');
-  var xlsxj = require("xlsx-to-json");
 
   document.addEventListener('dragover', function (event) {
     event.preventDefault();
@@ -12,10 +11,16 @@
   document.addEventListener('drop', function (event) {
     event.preventDefault();
 
-    for (let f of event.dataTransfer.files) {
-      // console.log('File(s) you dragged here: ', f.path)
-      readFile(f.path);
-    }
+      file = event.dataTransfer.files;
+      
+      if (file.length == 1) {
+        var fileType = file[0].name;
+        
+        if (checkFileType(fileType)) {
+          
+          readFile(file[0].path);
+        }
+      }
 
     return false;
   }, false);
@@ -43,6 +48,11 @@
 
   function loadData() {
     this.data = JSON.parse(fs.readFileSync(__dirname + '/write.json', 'utf8'));
+  }
+
+  function checkFileType(fileName) {
+    var nameParts = fileName.split('.');
+    return nameParts[nameParts.length - 1] === 'xlsx';
   }
 
 })();

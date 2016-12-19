@@ -2,7 +2,8 @@
 // endbower
 // for some reason this isen't being applied
 // FIGURE IT OUT!
-@import '../bower_components/bootstrap/dist/css/bootstrap.js';
+@import '../bower_components/bootstrap/dist/css/bootstrap.css';
+@import 'variables';
 
 .browsehappy {
   margin: 0.2em 0;
@@ -13,6 +14,9 @@
 
 body {
   padding: 0;
+  width: 100vw;
+  height: 100vh;
+  @extend .flex-container-center;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -104,3 +108,28 @@ body {
     margin-bottom: 10px;
   }
 }
+
+.flex-container-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.align-text {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.drag-n-drop {
+  border: solid;
+  border-style: dashed;
+  border-color: lightskyblue;
+
+  height: 200px;
+  width: 200px;
+}
+
+
+

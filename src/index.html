@@ -12,12 +12,6 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    
-    <!--<script>  Keep around till sure I dont need this for bootstrap/jquery
-      window.nodeRequire = require; 
-      delete window.require;
-      delete window.exports; delete window.module; 
-    </script> -->
     <script type="text/javascript" src="app/bower_components/jquery/dist/jquery.js"></script> 
     <script type="text/javascript" src="dragAndDrop.js"></script>
 
@@ -26,43 +20,7 @@
     <link rel="stylesheet" href="app/styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="clientApp">
-
-    <!-- Add your site or application content here -->
-    <div class="header">
-      <div class="navbar navbar-default" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-
-          </div>
-
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
-            <ul class="nav navbar-nav">
-              <li><a ng-href="#/animes">My Anime</a></li>
-              <li><a ng-href="#/allanimes">All Animes</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="container">
-    <div ng-view></div>
-    </div>
-
-    <div class="footer">
-      <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
-      </div>
-    </div>
+  <body ng-view ng-app="clientApp">
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -78,44 +36,18 @@
     <!-- endbuild -->
 
     <!-- show links -->
-    <script src="app/component/component.module.js"></script>
-    <script src="app/component/usersShows/usersShows.module.js"></script>
-    <script src="app/component/usersShows/animes.js"></script>
-
-    <script src="app/component/allShows/allShows.module.js"></script>
-    <script src="app/component/allShows/allShows.js"></script>
-
     <!-- api links -->
-    <script src="app/api/api.module.js"></script>
-    <script src="app/api/animes/animes.module.js"></script>
-    <script src="app/api/animes/animes.factory.js"></script>
-
-    <script src="app/api/users/users.module.js"></script>
-    <script src="app/api/users/users.factory.js"></script>
-
-    <script src="app/api/authenticate/authenticate.module.js"></script>
-    <script src="app/api/authenticate/authenticate.factory.js"></script>
 
     <!-- episodeLapp/ist links --> 
-    <script src="app/component/episodeList/episodeList.module.js"></script>
-    <script src="app/component/episodeList/animeEpisodes.js"></script>
-
-    <!-- episode app/links --> 
-    <script src="app/component/episode/episode.module.js"></script>
-    <script src="app/component/episode/anime-view.js"></script>
+    <script src="app/component/component.module.js"></script>
 
     <!-- Auth links -->
     <script src="app/component/authenticate/authenticate.module.js"></script>
     <script src="app/component/authenticate/authenticate.js"></script>
 
     <!-- directivapp/e -->
-    <script src="app/directive/directive.module.js"></script>
-    <script src="app/directive/youtube/youtube.directive.js"></script>
-    <script src="app/directive/goClick.directive.js"></script>
-
+    <!--<script src="app/directive/directive.module.js"></script> -->
     <!-- filter --> 
-    <script src="app/filter/filter.module.js"></script>
-    <script src="app/filter/trusted.filter.js"></script>
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="app/app.module.js"></script>

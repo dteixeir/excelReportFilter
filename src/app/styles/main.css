@@ -6,7 +6,9 @@
   padding: 0.2em 0; }
 
 body {
-  padding: 0; }
+  padding: 0;
+  width: 100vw;
+  height: 100vh; }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
@@ -71,3 +73,21 @@ body {
     border-radius: 0 !important; }
   form {
     margin-bottom: 10px; } }
+
+.flex-container-center, body {
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.align-text {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center; }
+
+.drag-n-drop {
+  border: solid;
+  border-style: dashed;
+  border-color: lightskyblue;
+  height: 200px;
+  width: 200px; }
