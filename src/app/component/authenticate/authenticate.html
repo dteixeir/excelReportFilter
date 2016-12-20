@@ -1,3 +1,16 @@
-  <div class="drag-n-drop align-text" ng-click="vm.print()">
+  <div ng-if="!vm.data" class="drag-n-drop align-text" ng-click="vm.print()">
     Drag File Here.
   </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th ng-repeat="header in vm.headers">{{header}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="record in vm.data track by $index">
+        <td ng-repeat="cell in record track by $index">{{cell}}</td>
+      </tr>
+    </tbody>
+  </table>
