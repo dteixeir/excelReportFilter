@@ -12,13 +12,6 @@
   padding: 0.2em 0;
 }
 
-body {
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  @extend .flex-container-center;
-}
-
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -122,6 +115,13 @@ body {
   text-align: center;
 }
 
+.container {
+  @extend .flex-container-center;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
 .drag-n-drop {
   border: solid;
   border-style: dashed;
@@ -129,6 +129,18 @@ body {
 
   height: 200px;
   width: 200px;
+}
+
+.row {
+  margin:0;
+}
+
+ul {
+  padding-left: 10px;
+}
+
+input {
+  float: right;
 }
 
 
