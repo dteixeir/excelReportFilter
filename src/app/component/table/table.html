@@ -1,0 +1,12 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th ng-click="vm.print(this);" ng-repeat="header in vm.headers2 track by $index" ng-if="vm.contains($index)">{{header.text}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="record in vm.data track by $index">
+      <td ng-if="vm.contains($index)" ng-repeat="cell in record track by $index">{{cell}}</td>
+    </tr>
+  </tbody>
+</table>

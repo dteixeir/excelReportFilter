@@ -6,13 +6,27 @@
   .config(function ($routeProvider, $httpProvider) {
     $httpProvider.interceptors.push('auth');
     $routeProvider
-      .when('/authenticate/', {
-        templateUrl: 'app/component/authenticate/authenticate.html',
-        controller: 'AuthenticateCtrl',
+
+      .when('/upload', {
+        templateUrl: 'app/component/upload/upload.html',
+        controller: 'UploadCtrl',
         controllerAs: 'vm'
       })
+
+      .when('/settings', {
+        templateUrl: 'app/component/settings/settings.html',
+        controller: 'SettingsCtrl',
+        controllerAs: 'vm'
+      })
+      
+      .when('/table', {
+        templateUrl: 'app/component/table/table.html',
+        controller: 'TableCtrl',
+        controllerAs: 'vm'
+      })   
+      
       .otherwise({
-        redirectTo: '/authenticate'
+        redirectTo: '/upload'
       });
   })
 

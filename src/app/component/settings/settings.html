@@ -1,0 +1,10 @@
+<div class="">
+  <ul>
+    <li class='row' ng-repeat="header in vm.headers2 track by $index">
+        <div class="col-xs-1">
+          <input type="checkbox" class="fl-right form-check-input" ng-model="header.value"/>
+        </div>
+        <span class="col-xs-11">{{header.text}}</span>
+    </li>
+  </ul>
+</div>

@@ -14,10 +14,20 @@
       file = event.dataTransfer.files;
       
       if (file.length == 1) {
-        var fileType = file[0].name;
+        var fileName = file[0].name;
         
-        if (checkFileType(fileType)) {
-          
+        if (checkFileType(fileName)) {
+
+          fs.writeFile(__dirname + '/settings.json', util.format('{}', ''));
+
+          var settings = {
+            filePath: file[0].path,
+            fileName: file,
+            columnHeaders: []
+          }
+
+          fs.writeFile(__dirname + '/settings.json', util.format('%j', settings));
+
           readFile(file[0].path);
         }
       }
