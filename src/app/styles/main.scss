@@ -1,9 +1,9 @@
 // bower:scss
 // endbower
-// for some reason this isen't being applied
-// FIGURE IT OUT!
-@import '../bower_components/bootstrap/dist/css/bootstrap.css';
 @import 'variables';
+@import "../bower_components/font-awesome-bower/css/font-awesome.css";
+@import '../bower_components/bootstrap/dist/css/bootstrap.css';
+
 
 .browsehappy {
   margin: 0.2em 0;
@@ -143,6 +143,39 @@ ul {
 input {
   float: right;
 }
+
+table {
+  table-layout: fixed;
+}
+
+td {
+  padding: 0;
+  // vertical-align: middle !important;
+  // overflow: hidden;
+  // word-wrap: break-word;
+}
+
+th {
+  width: 150px;
+}
+
+.icon {
+  float: left;
+  padding-right: 10px;
+}
+
+.no-overflow {
+  overflow: hidden;
+}
+
+.padding-verticle {
+  padding: 10px 0;
+}
+
+.float-none {
+  float: none;
+}
+
 
 
 

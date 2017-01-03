@@ -1,11 +1,29 @@
+<div class="row  padding-verticle"> 
+  <div class="col-md-3 dropdown">
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        {{vm.indexs[vm.currentIndex].text}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li ng-click="vm.setFilterGroup(header.index)" ng-repeat="header in vm.indexs track by $index"><a>{{header.text}}</a></li>
+      </ul>
+    </div>
+  </div>
+  <label class="col-md-4">Search: <input ng-model="vm.searchText"></label>
+</div>
+
 <table class="table table-striped">
   <thead>
     <tr>
-      <th ng-click="vm.print(this);" ng-repeat="header in vm.headers2 track by $index" ng-if="vm.contains($index)">{{header.text}}</th>
+      <th ng-click="vm.sort($index);" ng-repeat="header in vm.headers2 track by $index" ng-if="vm.contains($index)">
+        <i class="icon fa fa-lg" ng-class="{0:'fa-caret-down', 1:'fa-caret-up', 2:'none'} [vm.getOrder($index)]"></i>
+        <div class="no-overflow">{{header.text}}</div>
+      </th>
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="record in vm.data track by $index">
+    <tr ng-repeat="record in vm.newData | orderBy: vm.sortOrder | filter: vm.getFilter() track by $index">
       <td ng-if="vm.contains($index)" ng-repeat="cell in record track by $index">{{cell}}</td>
     </tr>
   </tbody>

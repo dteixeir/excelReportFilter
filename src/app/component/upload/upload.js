@@ -11,8 +11,6 @@ angular.module('clientApp.component.upload')
   .controller('UploadCtrl', function ($routeParams, $http, $location, $window, auth) {
     var vm = this;
 
-    console.log('shit');   
-
     $window.addEventListener('drop', function (event) {
       event.preventDefault();
       $window.location.href = '#/settings';

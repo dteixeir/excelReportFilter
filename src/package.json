@@ -5,6 +5,7 @@
   "devDependencies": {
     "angular-resource": "^1.6.0",
     "electron-squirrel-startup": "^1.0.0",
+    "font-awesome": "^4.7.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "2.3.1",
     "gulp-cache": "^0.2.10",

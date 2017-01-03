@@ -1,6 +1,13 @@
-<div class="">
+<div class="row padding-verticle"> 
+  <label class="col-md-4">
+    <span>Search:</span>
+    <input class="float-none" ng-model="vm.searchText">
+  </label>
+</div>
+
+<div>
   <ul>
-    <li class='row' ng-repeat="header in vm.headers2 track by $index">
+    <li class='row' ng-repeat="header in vm.headers2 | filter: vm.searchText track by $index">
         <div class="col-xs-1">
           <input type="checkbox" class="fl-right form-check-input" ng-model="header.value"/>
         </div>

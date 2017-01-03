@@ -11,9 +11,7 @@ angular.module('clientApp.component.settings')
   .controller('SettingsCtrl', function ($http, $routeParams, $location, $rootScope, $window, auth) {
     var vm = this;
 
-    console.log('rawr');
-
-        // functions
+    // functions
     vm.getData = getData;
     vm.saveHeaders = saveHeaders;
     vm.saveSettings = saveSettings;
@@ -22,12 +20,10 @@ angular.module('clientApp.component.settings')
     vm.headers = [];
     vm.headers2 = [];
     vm.indexs = [];
-    vm.indexs = [];
 
     checkSettings();
 
     $rootScope.$on("$locationChangeStart", function(event, next, current) { 
-      // vm.saveHeaders();
       vm.saveSettings();
       vm.saveHeaders();
     });
@@ -60,7 +56,7 @@ angular.module('clientApp.component.settings')
     function saveHeaders() {
       vm.headers2.forEach((element, i) => {
         if (element.value) {
-          vm.indexs.push(i);
+          vm.indexs.push({ text: element.text, index: i });
         }
       });
 
