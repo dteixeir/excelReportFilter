@@ -17,31 +17,28 @@ angular.module('clientApp.component.table')
     vm.sort = sort;
     vm.getOrder = getOrder;
     vm.setFilterGroup = setFilterGroup;
-    vm.changeData = changeData;
     vm.getFilter = getFilter;
+    vm.refresh = refresh;
 
     vm.dropDown = '';
-    vm.newData = [];
     vm.data = [];
     vm.sortOrder = '0';
     
-    vm.filterGroup = '$';
-    vm.currentIndex = 0;    
-    vm.searchText = '';
+    vm.refresh();
 
     getData();
     vm.indexs = angular.fromJson(window.localStorage.getItem('indexs'));
-    vm.indexs.unshift({ index: '$', text: 'All' });
+    vm.indexs.unshift({ index: '$', text: '-- All --' });
 
-    vm.headers2 = angular.fromJson(window.localStorage.getItem('columns'));
+    vm.headers = angular.fromJson(window.localStorage.getItem('columns'));
     
     // $ matches against all sub objects - requires special functionality to put it in a select statement
     function setFilterGroup(groupIndex) {
       if (groupIndex == '$') {
         vm.filterGroup = '$';
-        vm.currentIndex = 0;
+        vm.currentIndex = { text: '-- All --', index: '$' };
       } else {
-        vm.currentIndex = groupIndex + 1;
+        vm.currentIndex = contains(groupIndex);
         vm.filterGroup = groupIndex;
       }
     }
@@ -61,27 +58,18 @@ angular.module('clientApp.component.table')
       return 2;
     }
 
+    function refresh() {
+      vm.filterGroup = '$';
+      vm.searchText = '';
+      vm.currentIndex = { text: '-- All --', index: '$' };
+    }
+
     // get data from local file    
     function getData() {
       return $http.get(__dirname + '/write.json').then(function(response) {
-        vm.data = response.data;
-        vm.data.shift();
-        vm.changeData();
+        vm.data = response.data.data;
       }, function() {
           throw 'There was an error getting data';
-      });
-    }
-
-    // Change data to Array of Jsons    
-    function changeData() {
-      vm.data.forEach((row, i1) => {
-        var newRow = {};
-        
-        row.forEach((cell, i2) => {
-          newRow[i2] = cell;
-        });
-
-        vm.newData.push(newRow);
       });
     }
 
@@ -99,10 +87,10 @@ angular.module('clientApp.component.table')
     function contains(index) {
       for (var i = 0; i < vm.indexs.length; i++) {
         if (vm.indexs[i].index === index) {
-          return true;
+          return vm.indexs[i];
         }
       }
 
-      return false;
+      return null;
     }
   });

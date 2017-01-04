@@ -104,6 +104,11 @@ input {
 
 table {
   table-layout: fixed; }
+  table thead {
+    background-color: #f8f8f8 !important; }
+    table thead tr th {
+      border-top: 2px solid #e5e5e5 !important;
+      border-bottom: 2px solid #e5e5e5 !important; }
 
 td {
   padding: 0; }
@@ -123,3 +128,22 @@ th {
 
 .float-none {
   float: none; }
+
+.no-margin {
+  margin: 0 !important; }
+
+.refresh-button {
+  float: left;
+  margin-left: 10px; }
+
+.padding-15 {
+  padding: 15px; }
+
+.center {
+  display: flex;
+  align-items: center; }
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }

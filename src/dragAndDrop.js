@@ -42,11 +42,54 @@
       let data = file.Sheets['ICSW Detail'];
       data = xlsx.utils.sheet_to_row_object_array(data, { header: 1 });
 
-      writeFile(data);
+      filterData(data);   
+      // writeFile(newData);
 
     } catch (err) {
       console.log(err.message);
     }
+  }
+
+  function filterData(data) {
+    var headers = upgradeHeaders(data[0]);
+    data.shift();
+    var data = changeData(data);
+
+    var newDataObject = {
+      "headers": headers,
+      "data": data
+    };
+
+    writeFile(newDataObject);
+  }
+
+  function upgradeHeaders(data) {
+    if (!data)
+      return;  
+
+    var headers2 = [];
+    data.forEach((element, i) => {
+      var item = { text: element, value: false, index: i };
+      headers2.push(item);
+    });
+  
+    return headers2;
+  }
+
+  function changeData(data) {
+    var newData = [];
+
+    data.forEach((row, i1) => {
+      var newRow = {};
+      
+      row.forEach((cell, i2) => {
+        newRow[i2] = cell;
+      });
+
+      newData.push(newRow);
+    });
+
+    return newData;
   }
 
   function writeFile(data) {

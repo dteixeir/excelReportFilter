@@ -15,10 +15,9 @@ angular.module('clientApp.component.settings')
     vm.getData = getData;
     vm.saveHeaders = saveHeaders;
     vm.saveSettings = saveSettings;
+    vm.checkSettings = checkSettings;
 
-    vm.tableStart = 4;
     vm.headers = [];
-    vm.headers2 = [];
     vm.indexs = [];
 
     checkSettings();
@@ -29,50 +28,33 @@ angular.module('clientApp.component.settings')
     });
 
     function checkSettings() {
-      vm.headers2 = angular.fromJson(window.localStorage.getItem('columns'));
+      vm.headers = angular.fromJson(window.localStorage.getItem('columns'));
 
-      if (!vm.headers2) {
+      if (!vm.headers) {
         vm.getData();
-      } else {
-        
       }
     }
 
     function saveSettings() {
-      window.localStorage.setItem('columns', angular.toJson(vm.headers2));
+      window.localStorage.setItem('columns', angular.toJson(vm.headers));
     }
         
     function getData() {
       return $http.get(__dirname + '/write.json').then(function (response) {
-        vm.data = response.data;
-        vm.headers = vm.data[0];
-        upgradeHeaders();
-        vm.data.shift();
+        vm.data = response.data.data;
+        vm.headers = response.data.headers;
       }, function () {
         throw 'There was an error getting data';
       });
     }
     
     function saveHeaders() {
-      vm.headers2.forEach((element, i) => {
+      vm.headers.forEach((element) => {
         if (element.value) {
-          vm.indexs.push({ text: element.text, index: i });
+          vm.indexs.push(element);
         }
       });
 
       window.localStorage.setItem('indexs', angular.toJson(vm.indexs));
     }
-    
-    function upgradeHeaders() {
-      if (!vm.headers)
-        return;  
-
-      vm.headers2 = [];
-      vm.headers.forEach((element) => {
-        var item = { text: element, value: false, index: null };
-        vm.headers2.push(item);
-      });
-    }
-
-
   });

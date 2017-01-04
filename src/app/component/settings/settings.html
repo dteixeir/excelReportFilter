@@ -1,13 +1,13 @@
 <div class="row padding-verticle"> 
-  <label class="col-md-4">
-    <span>Search:</span>
-    <input class="float-none" ng-model="vm.searchText">
-  </label>
+  <div class="col-md-4 no-margin form-group">
+    <label class="sr-only" for="searchText">Search Text</label>
+    <input type="text" ng-model="vm.searchText" class="form-control" id="searchText" placeholder="Search...">
+  </div>
 </div>
 
-<div>
-  <ul>
-    <li class='row' ng-repeat="header in vm.headers2 | filter: vm.searchText track by $index">
+<div class="row">
+  <ul class="col-md-6 padding-15 list-group">
+    <li class='row list-group-item' ng-repeat="header in vm.headers | orderBy : 'text' | filter: vm.searchText track by $index">
         <div class="col-xs-1">
           <input type="checkbox" class="fl-right form-check-input" ng-model="header.value"/>
         </div>
