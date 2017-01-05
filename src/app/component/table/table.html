@@ -7,7 +7,7 @@
   <!-- search text field -->
   <div class="col-md-4 no-margin form-group">
     <label class="sr-only" for="searchText">Search Text</label>
-    <input type="text" ng-model="vm.searchText" class="form-control" id="searchText" placeholder="Search...">
+    <input type="text" ng-model="vm.searchText[vm.filterGroup]" class="form-control" id="searchText" placeholder="Search...">
   </div>
 
   <!-- drop down -->
@@ -36,7 +36,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="record in vm.data | orderBy: vm.sortOrder | filter: vm.getFilter() track by $index">
+    <tr ng-repeat="record in vm.data | orderBy: vm.sortOrder | filter: vm.searchText[vm.filterGroup] : true track by $index">
       <td ng-if="vm.contains($index)" ng-repeat="cell in record track by $index">{{cell}}</td>
     </tr>
   </tbody>

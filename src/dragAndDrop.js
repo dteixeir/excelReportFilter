@@ -83,7 +83,7 @@
       var newRow = {};
       
       row.forEach((cell, i2) => {
-        newRow[i2] = cell;
+        newRow[i2] = cell.trim();
       });
 
       newData.push(newRow);

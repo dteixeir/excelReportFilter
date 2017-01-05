@@ -86,7 +86,7 @@ angular.module('clientApp.component.table')
     // check for index in index array of checked headers    
     function contains(index) {
       for (var i = 0; i < vm.indexs.length; i++) {
-        if (vm.indexs[i].index === index) {
+        if (vm.indexs[i].index == index) {
           return vm.indexs[i];
         }
       }
