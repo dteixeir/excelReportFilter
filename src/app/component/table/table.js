@@ -66,11 +66,11 @@ angular.module('clientApp.component.table')
 
     // get data from local file    
     function getData() {
-      return $http.get(__dirname + '/write.json').then(function(response) {
-        vm.data = response.data.data;
-      }, function() {
-          throw 'There was an error getting data';
-      });
+      // return $http.get(__dirname + '/write.json').then(function(response) {
+      //   vm.data = response.data.data;
+      // }, function() {
+      //     throw 'There was an error getting data';
+      // });
     }
 
     // sort toggle logic    

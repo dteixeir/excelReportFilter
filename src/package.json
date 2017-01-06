@@ -3,6 +3,7 @@
   "private": true,
   "main": "main.js",
   "devDependencies": {
+    "angular-electron": "^0.2.1",
     "angular-resource": "^1.6.0",
     "electron-squirrel-startup": "^1.0.0",
     "font-awesome": "^4.7.0",
@@ -31,6 +32,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
     "lazypipe": "^0.2.4",
+    "nedb": "^1.8.0",
     "open": "0.0.5",
     "phantomjs-prebuilt": "^2.1.7",
     "rimraf": "^2.4.0",

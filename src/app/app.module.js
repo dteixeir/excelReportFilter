@@ -9,7 +9,8 @@
   angular.module('clientApp', [
     'ngRoute',
     'ngResource',
-    'clientApp.component'
+    'clientApp.component',
+    'angular-electron'
   ]);
 
 }());

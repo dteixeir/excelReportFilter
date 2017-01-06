@@ -2,6 +2,12 @@
   const xlsx = require('xlsx');
   var fs = require('fs');
   var util = require('util');
+  var Datastore = require('nedb')
+  var db = new Datastore({ filename: __dirname + '/write.json' });
+  db.loadDatabase(function (err) {    // Callback is optional
+  // Now commands will be executed
+
+  });
 
   document.addEventListener('dragover', function (event) {
     event.preventDefault();
@@ -43,7 +49,6 @@
       data = xlsx.utils.sheet_to_row_object_array(data, { header: 1 });
 
       filterData(data);   
-      // writeFile(newData);
 
     } catch (err) {
       console.log(err.message);
@@ -60,7 +65,7 @@
       "data": data
     };
 
-    writeFile(newDataObject);
+    // writeFile(newDataObject);
   }
 
   function upgradeHeaders(data) {
@@ -83,29 +88,45 @@
       var newRow = {};
       
       row.forEach((cell, i2) => {
-        newRow[i2] = cell.trim();
+        newRow['c' + i2] = cell.trim();
       });
 
       newData.push(newRow);
     });
 
-    return newData;
+   
+    writeFile(newData);
+    // db.insert(newData, function (err, newDocs) {});
+    // writeFile(newData);
   }
 
   function writeFile(data) {
-    fs.writeFile(__dirname + '/write.json', util.format('{}', ''));
-    fs.writeFile(__dirname + '/write.json', util.format('%j', data), function () {
-      loadData();
-    });
+    console.log('db' + db);
+    db.insert(data, function (err, newDocs) {
+      console.log('inner insert');
+        // Two documents were inserted in the database
+        // newDocs is an array with these documents, augmented with their _id
+          // console.log(newDocs);  
+      });
+
+    // fs.writeFile(__dirname + '/write.json', util.format('', ''));
+    // // fs.writeFile(__dirname + '/write.json', util.format('%j', data), function () {
+    // //   loadData();
+    // // });
+    // fs.appendFile(__dirname + '/write.json', util.format('%j', data), function (err) {
+
+    // });
+
   }
 
-  function loadData() {
-    this.data = JSON.parse(fs.readFileSync(__dirname + '/write.json', 'utf8'));
-  }
+  // function loadData() {
+  //   this.data = JSON.parse(fs.readFileSync(__dirname + '/write.json', 'utf8'));
+  // }
 
   function checkFileType(fileName) {
     var nameParts = fileName.split('.');
     return nameParts[nameParts.length - 1] === 'xlsx';
   }
+
 
 })();

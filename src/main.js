@@ -5,62 +5,51 @@ const electron = require('electron');
 const {app} = electron;
 const {BrowserWindow} = electron;
 const {autoUpdater} = electron;
-const {ipcMain} = electron;
 const os = require('os');
+const $q = require('q');
 
 const logger = require('winston');
+var ipcMain = require('electron').ipcMain;
+
+// ipcMain.ipcMain.on('dbRequest', (event, arg) => {
+//     console.log('main');
+//     dbRequest(arg).then((data) => {
+//         ipcMain.ipcMain.once('dbRequest-reply', data);
+
+//     });
+
+//     ipcMain.ipcMain.removeAllListeners();
+
+// });
+
+    ipcMain.on('dbRequest', (event, arg) => {
+        console.log('main');
+        dbRequest(arg).then((data) => {
+            event.sender.send('dbRequest-reply', data);
+        });
+    });
+
+
+
+
+dbRequest = function(arg) {
+  var deferred = $q.defer();
+  db.find(arg, function (err, docs) {
+    deferred.resolve(docs);
+  });
+  
+  return deferred.promise;
+};
+
+var Datastore = require('nedb')
+var db = new Datastore({ filename: __dirname + '/write.json' });
+db.loadDatabase(function (err) {    // Callback is optional
+// Now commands will be executed
+
+});
 
 // Keep reference of main window because of GC
 var mainWindow = null;
-
-// var updateFeed = 'http://localhost:3000/updates/latest';
-// var isDevelopment = process.env.NODE_ENV === 'development';
-var feedURL = "";
-
-// Don't use auto-updater if we are in development 
-// if (!isDevelopment) {
-//     if (os.platform() === 'darwin') {
-//         updateFeed = 'http://ea-todo.herokuapp.com/updates/latest'; 
-//     }
-//     else if (os.platform() === 'win32') {
-//         updateFeed = 'http://eatodo.s3.amazonaws.com/updates/latest/win' + (os.arch() === 'x64' ? '64' : '32');
-//     }
-
-//     autoUpdater.addListener("update-available", function(event) {
-//         logger.debug("A new update is available");
-//         if (mainWindow) {
-//             mainWindow.webContents.send('update-message', 'update-available');
-//         }
-//     });
-//     autoUpdater.addListener("update-downloaded", function(event, releaseNotes, releaseName, releaseDate, updateURL) {
-//         logger.debug("A new update is ready to install", `Version ${releaseName} is downloaded and will be automatically installed on Quit`);
-//         if (mainWindow) {
-//             mainWindow.webContents.send('update-message', 'update-downloaded');
-//         }
-//     });
-//     autoUpdater.addListener("error", function(error) {
-//         logger.error(error);
-//         if (mainWindow) {
-//             mainWindow.webContents.send('update-message', 'update-error');
-//         }
-//     });
-//     autoUpdater.addListener("checking-for-update", function(event) {
-//         logger.debug("Checking for update");
-//         if (mainWindow) {
-//             mainWindow.webContents.send('update-message', 'checking-for-update');
-//         }
-//     });
-//     autoUpdater.addListener("update-not-available", function() {
-//         logger.debug("Update not available");
-//         if (mainWindow) {
-//             mainWindow.webContents.send('update-message', 'update-not-available');
-//         }
-//     });
-    
-//     const appVersion = require('./package.json').version;
-//     const feedURL = updateFeed + '?v=' + appVersion;
-//     autoUpdater.setFeedURL(feedURL);
-// }
 
 // Quit when all windows are closed
 app.on('window-all-closed', function() {
@@ -80,7 +69,6 @@ app.on('ready', function() {
     });
 
     mainWindow.webContents.openDevTools();
-    
     // Target HTML file which will be opened in window
     mainWindow.loadURL('file://' + __dirname + "/index.html");
 
@@ -91,11 +79,4 @@ app.on('ready', function() {
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
-    
-    // if (!isDevelopment) {
-    //     mainWindow.webContents.on('did-frame-finish-load', function() {
-    //         logger.debug("Checking for updates: " + feedURL);
-    //         autoUpdater.checkForUpdates();
-    // }
-
 });

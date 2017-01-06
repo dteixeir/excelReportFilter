@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp.component.settings')
-  .controller('SettingsCtrl', function ($http, $routeParams, $location, $rootScope, $window, auth) {
+  .controller('SettingsCtrl', function ($http, $routeParams, $location, $rootScope, $window, auth, ipcRenderer, apiFactory) {
     var vm = this;
 
     // functions
@@ -21,13 +21,19 @@ angular.module('clientApp.component.settings')
     vm.indexs = [];
 
     checkSettings();
+    apiFactory.getSettings({_id: "gra7O7psKW6LkyDB"}).then((data) => { 
+      console.log('settings page');
+    });
+
 
     $rootScope.$on("$locationChangeStart", function(event, next, current) { 
       vm.saveSettings();
       vm.saveHeaders();
+      
     });
 
     function checkSettings() {
+      // ipcRenderer.send('dbRequest', 'event, arg');
       vm.headers = angular.fromJson(window.localStorage.getItem('columns'));
 
       if (!vm.headers) {
@@ -40,12 +46,14 @@ angular.module('clientApp.component.settings')
     }
         
     function getData() {
-      return $http.get(__dirname + '/write.json').then(function (response) {
-        vm.data = response.data.data;
-        vm.headers = response.data.headers;
-      }, function () {
-        throw 'There was an error getting data';
-      });
+      
+
+      // return $http.get(__dirname + '/write.json').then(function (response) {
+      //   vm.data = response.data.data;
+      //   vm.headers = response.data.headers;
+      // }, function () {
+      //   throw 'There was an error getting data';
+      // });
     }
     
     function saveHeaders() {
