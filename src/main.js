@@ -11,42 +11,51 @@ const $q = require('q');
 const logger = require('winston');
 var ipcMain = require('electron').ipcMain;
 
-// ipcMain.ipcMain.on('dbRequest', (event, arg) => {
-//     console.log('main');
-//     dbRequest(arg).then((data) => {
-//         ipcMain.ipcMain.once('dbRequest-reply', data);
-
-//     });
-
-//     ipcMain.ipcMain.removeAllListeners();
-
-// });
-
-    ipcMain.on('dbRequest', (event, arg) => {
-        console.log('main');
-        dbRequest(arg).then((data) => {
-            event.sender.send('dbRequest-reply', data);
-        });
+ipcMain.on('dbRequest', (event, arg) => {
+    dbRequest(arg).then((data) => {
+        event.sender.send('dbRequest-reply', data);
     });
-
-
-
+});
 
 dbRequest = function(arg) {
-  var deferred = $q.defer();
-  db.find(arg, function (err, docs) {
-    deferred.resolve(docs);
-  });
+    var deferred = $q.defer();
+    switch (arg.db) {
+        case 'headers':
+            db.headers.find(arg.request, function (err, docs) {
+                deferred.resolve(docs);
+            });
+            break;
+
+        default: //data
+            db.data.find(arg.request, { _id: 0 })
+                .sort({ 0: 1 })
+                .skip(0)
+                .limit(50)
+                .exec(function (err, docs) {
+                deferred.resolve(docs);
+            });
+            break;    
+    }
   
   return deferred.promise;
 };
 
-var Datastore = require('nedb')
-var db = new Datastore({ filename: __dirname + '/write.json' });
-db.loadDatabase(function (err) {    // Callback is optional
-// Now commands will be executed
+// Correct Version
+// dbRequest = function(arg) {
+//   var deferred = $q.defer();
+//   db.find(arg, function (err, docs) {
+//     deferred.resolve(docs);
+//   });
+  
+//   return deferred.promise;
+// };
 
-});
+var Datastore = require('nedb')
+var db = {};
+db.data = new Datastore({ filename: __dirname + '/db/data.json' });
+db.headers = new Datastore({ filename: __dirname + '/db/headers.json' });
+db.data.loadDatabase();
+db.headers.loadDatabase();
 
 // Keep reference of main window because of GC
 var mainWindow = null;

@@ -12,7 +12,7 @@ angular.module('clientApp.component.settings')
     var vm = this;
 
     // functions
-    vm.getData = getData;
+    // vm.getData = getData;
     vm.saveHeaders = saveHeaders;
     vm.saveSettings = saveSettings;
     vm.checkSettings = checkSettings;
@@ -21,10 +21,10 @@ angular.module('clientApp.component.settings')
     vm.indexs = [];
 
     checkSettings();
-    apiFactory.getSettings({_id: "gra7O7psKW6LkyDB"}).then((data) => { 
-      console.log('settings page');
-    });
-
+    var stuff = {
+      request: { _id: "gra7O7psKW6LkyDB" },
+      db: 'settings'
+    }
 
     $rootScope.$on("$locationChangeStart", function(event, next, current) { 
       vm.saveSettings();
@@ -36,24 +36,13 @@ angular.module('clientApp.component.settings')
       // ipcRenderer.send('dbRequest', 'event, arg');
       vm.headers = angular.fromJson(window.localStorage.getItem('columns'));
 
-      if (!vm.headers) {
-        vm.getData();
-      }
+      // if (!vm.headers) {
+      //   vm.getData();
+      // }
     }
 
     function saveSettings() {
       window.localStorage.setItem('columns', angular.toJson(vm.headers));
-    }
-        
-    function getData() {
-      
-
-      // return $http.get(__dirname + '/write.json').then(function (response) {
-      //   vm.data = response.data.data;
-      //   vm.headers = response.data.headers;
-      // }, function () {
-      //   throw 'There was an error getting data';
-      // });
     }
     
     function saveHeaders() {

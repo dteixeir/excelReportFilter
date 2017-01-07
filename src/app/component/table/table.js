@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp.component.table')
-  .controller('TableCtrl', function ($routeParams, $http, $location, $window, auth) {
+  .controller('TableCtrl', function ($routeParams, $scope, $http, $location, $window, auth, apiFactory) {
     var vm = this;
 
     // functions
@@ -23,8 +23,15 @@ angular.module('clientApp.component.table')
     vm.dropDown = '';
     vm.data = [];
     vm.sortOrder = '0';
+
+    var dbRequest = {
+      request: {},
+      db: 'data'
+    }
     
-    vm.refresh();
+    vm.filterGroup = '$';
+    vm.searchText = '';
+    vm.currentIndex = { text: '-- All --', index: '$' };
 
     getData();
     vm.indexs = angular.fromJson(window.localStorage.getItem('indexs'));
@@ -66,11 +73,11 @@ angular.module('clientApp.component.table')
 
     // get data from local file    
     function getData() {
-      // return $http.get(__dirname + '/write.json').then(function(response) {
-      //   vm.data = response.data.data;
-      // }, function() {
-      //     throw 'There was an error getting data';
-      // });
+      apiFactory.db(dbRequest).then((data) => { 
+        console.log(data);
+        
+        $scope.$apply(vm.data = data);
+      });
     }
 
     // sort toggle logic    

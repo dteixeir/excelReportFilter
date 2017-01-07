@@ -3,11 +3,12 @@
   var fs = require('fs');
   var util = require('util');
   var Datastore = require('nedb')
-  var db = new Datastore({ filename: __dirname + '/write.json' });
-  db.loadDatabase(function (err) {    // Callback is optional
-  // Now commands will be executed
+  var db = {};
+  db.data = new Datastore({ filename: __dirname + '/db/data.json' });
+  db.headers = new Datastore({ filename: __dirname + '/db/headers.json' });
+  db.data.loadDatabase();
+  db.headers.loadDatabase();
 
-  });
 
   document.addEventListener('dragover', function (event) {
     event.preventDefault();
@@ -88,7 +89,7 @@
       var newRow = {};
       
       row.forEach((cell, i2) => {
-        newRow['c' + i2] = cell.trim();
+        newRow[i2] = cell.trim();
       });
 
       newData.push(newRow);
@@ -101,27 +102,10 @@
   }
 
   function writeFile(data) {
-    console.log('db' + db);
-    db.insert(data, function (err, newDocs) {
-      console.log('inner insert');
-        // Two documents were inserted in the database
-        // newDocs is an array with these documents, augmented with their _id
-          // console.log(newDocs);  
-      });
-
-    // fs.writeFile(__dirname + '/write.json', util.format('', ''));
-    // // fs.writeFile(__dirname + '/write.json', util.format('%j', data), function () {
-    // //   loadData();
-    // // });
-    // fs.appendFile(__dirname + '/write.json', util.format('%j', data), function (err) {
-
-    // });
-
+    db.data.insert(data, function (err, newDocs) {
+      console.log(err); 
+    });
   }
-
-  // function loadData() {
-  //   this.data = JSON.parse(fs.readFileSync(__dirname + '/write.json', 'utf8'));
-  // }
 
   function checkFileType(fileName) {
     var nameParts = fileName.split('.');
