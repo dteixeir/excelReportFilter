@@ -7,55 +7,69 @@ const {BrowserWindow} = electron;
 const {autoUpdater} = electron;
 const os = require('os');
 const $q = require('q');
+const Datastore = require('nedb');
+const json2xls = require('json2xls');
+const fs = require('fs');
 
 const logger = require('winston');
 var ipcMain = require('electron').ipcMain;
 
 ipcMain.on('dbRequest', (event, arg) => {
     dbRequest(arg).then((data) => {
-        event.sender.send('dbRequest-reply', data);
+        event.sender.send('dbRequest-reply-' + arg.db, data);
     });
 });
 
-dbRequest = function(arg) {
+ipcMain.on('exportData', (event, arg) => {
+    exportData(arg);
+});
+
+dbRequest = function (arg) {
     var deferred = $q.defer();
-    switch (arg.db) {
-        case 'headers':
-            db.headers.find(arg.request, function (err, docs) {
+    var db = getDb(arg.db);
+
+    switch (arg.action) {
+        case 'get':
+            var query = db.find(arg.request, arg.filter).sort(arg.sort);
+            if (arg.pagination) {
+                query = query.skip(0).limit(50);
+            } 
+            query.exec(function (err, docs) {
+                console.log(err);
                 deferred.resolve(docs);
             });
             break;
-
-        default: //data
-            db.data.find(arg.request, { _id: 0 })
-                .sort({ 0: 1 })
-                .skip(0)
-                .limit(50)
-                .exec(function (err, docs) {
+            
+        case 'update':
+            db.update(arg.request, arg.filter, { multi: false }, function (err, docs) {
+                console.log(err);
                 deferred.resolve(docs);
             });
-            break;    
+            break;
     }
-  
-  return deferred.promise;
-};
+    return deferred.promise;
+}
 
-// Correct Version
-// dbRequest = function(arg) {
-//   var deferred = $q.defer();
-//   db.find(arg, function (err, docs) {
-//     deferred.resolve(docs);
-//   });
-  
-//   return deferred.promise;
-// };
+getDb = function (db) {
+    switch (db) {
+        case 'headers':
+            return _db.headers;
+            
+        case 'data':
+            return _db.data;    
+    }
+}
 
-var Datastore = require('nedb')
-var db = {};
-db.data = new Datastore({ filename: __dirname + '/db/data.json' });
-db.headers = new Datastore({ filename: __dirname + '/db/headers.json' });
-db.data.loadDatabase();
-db.headers.loadDatabase();
+exportData = function (data) {
+    var xls = json2xls(data);
+    fs.writeFileSync(__dirname + '/db/data.xlsx', xls, 'binary');
+}
+
+var _db = {};
+_db.data = new Datastore({ filename: __dirname + '/db/data.json' });
+_db.headers = new Datastore({ filename: __dirname + '/db/headers.json' });
+_db.data.loadDatabase();
+_db.headers.loadDatabase();
 
 // Keep reference of main window because of GC
 var mainWindow = null;

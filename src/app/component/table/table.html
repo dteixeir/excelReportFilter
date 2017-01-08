@@ -16,28 +16,38 @@
       <button class="row btn btn-default btn-block dropdown-toggle center" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         <i class="col-md-2 padding-none fa fa-lg fa-caret-down"></i>
         <span class="col-md-10 ellipsis">{{vm.currentIndex.text}}</span>
-        
       </button>
+
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        <li ng-click="vm.setFilterGroup(header.index)" ng-repeat="header in vm.indexs | orderBy: 'text'"><a>{{header.text}}</a></li>
+        <li ng-click="vm.setFilterGroup('$')" ><a>-- All --</a></li>
+        <li ng-click="vm.setFilterGroup(header)" ng-repeat="header in vm.headers | orderBy: 'text'"><a>{{header.text}}</a></li>
       </ul>
     </div>
   </div>
+
+  <label>
+      <input class="refresh-button" type="checkbox" ng-change="vm.getHeaders()" ng-model="vm.pagination"/>
+      <span class="refresh-button custom-control-description">Pagination?</span>
+  </label>
+
+  <button ng-click="vm.exportData();" class="refresh-button btn btn-default">
+    <i class="fa fa-sign-out"></i>
+  </button>
 </div>
 
 <!-- table -->
 <table class="table table-striped">
   <thead>
     <tr>
-      <th ng-click="vm.sort(header.index);" ng-repeat="header in vm.headers" ng-if="vm.contains(header.index)">
+      <th ng-click="vm.sort(header.index);" ng-repeat="header in vm.headers">
         <i class="icon fa fa-lg" ng-class="{0:'fa-caret-down', 1:'fa-caret-up', 2:'none'} [vm.getOrder(header.index)]"></i>
         <div class="no-overflow">{{header.text}}</div>
       </th>
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="record in vm.data | orderBy: vm.sortOrder | filter: vm.searchText[vm.filterGroup] : true track by $index">
-      <td ng-if="vm.contains($index)" ng-repeat="cell in record track by $index">{{cell}}</td>
+    <tr ng-repeat="record in vm.data | orderBy: vm.sortOrder | filter: vm.getFilter() track by $index">
+      <td ng-repeat="cell in record track by $index">{{cell}}</td>
     </tr>
   </tbody>
 </table>

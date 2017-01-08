@@ -7,9 +7,15 @@
 
 <div class="row">
   <ul class="col-md-6 padding-15 list-group">
-    <li class='row list-group-item' ng-repeat="header in vm.headers | orderBy : 'text' | filter: vm.searchText track by $index">
+    <li class='row list-group-item' ng-repeat="header in vm.headers | filter: vm.searchText">
         <div class="col-xs-1">
-          <input type="checkbox" class="fl-right form-check-input" ng-model="header.value"/>
+          <input ng-click="vm.headerToggle(header)" 
+                  type="checkbox" 
+                  ng-true-value="1" 
+                  ng-false-value="0" 
+                  ng-checked="header.value == 1"
+                  class="fl-right form-check-input" 
+                  ng-model="header.value"/>
         </div>
         <span class="col-xs-11">{{header.text}}</span>
     </li>

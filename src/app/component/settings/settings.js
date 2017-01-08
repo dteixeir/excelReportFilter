@@ -1,57 +1,54 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name clientApp.controller:MovieViewCtrl
- * @description
- * # MovieViewCtrl
- * Controller of the clientApp
- */
 angular.module('clientApp.component.settings')
-  .controller('SettingsCtrl', function ($http, $routeParams, $location, $rootScope, $window, auth, ipcRenderer, apiFactory) {
+  .controller('SettingsCtrl', function ($http, $scope, $routeParams, $location, $rootScope, $window, auth, ipcRenderer, apiFactory) {
     var vm = this;
 
     // functions
-    // vm.getData = getData;
-    vm.saveHeaders = saveHeaders;
-    vm.saveSettings = saveSettings;
-    vm.checkSettings = checkSettings;
+    vm.saveHeader = saveHeader;
+    vm.getSettings = getSettings;
+    vm.scrubData = scrubData;
+    vm.headerToggle = headerToggle;
 
     vm.headers = [];
-    vm.indexs = [];
 
-    checkSettings();
-    var stuff = {
-      request: { _id: "gra7O7psKW6LkyDB" },
-      db: 'settings'
-    }
+    vm.getSettings();
 
-    $rootScope.$on("$locationChangeStart", function(event, next, current) { 
-      vm.saveSettings();
-      vm.saveHeaders();
-      
-    });
-
-    function checkSettings() {
-      // ipcRenderer.send('dbRequest', 'event, arg');
-      vm.headers = angular.fromJson(window.localStorage.getItem('columns'));
-
-      // if (!vm.headers) {
-      //   vm.getData();
-      // }
-    }
-
-    function saveSettings() {
-      window.localStorage.setItem('columns', angular.toJson(vm.headers));
-    }
-    
-    function saveHeaders() {
-      vm.headers.forEach((element) => {
+    function scrubData() {
+      vm.headers.forEach((element) => { 
         if (element.value) {
-          vm.indexs.push(element);
+          element.value = 1;
+        } else {
+          element.value = 0;
         }
       });
+    }
 
-      window.localStorage.setItem('indexs', angular.toJson(vm.indexs));
+    function getSettings() {
+      var dbRequest = {
+        request: {},
+        db: 'headers',
+        action: 'get'
+      };
+
+      apiFactory.db(dbRequest).then((data) => {
+        $scope.$apply(vm.headers = data);
+      });
+    }
+
+    function headerToggle(header) {
+      header.value = header.value ? 1 : 0;
+      vm.saveHeader(header);
+    }
+    
+    function saveHeader(header) {
+      var dbRequest = {
+        request: { _id: header._id },
+        filter: { $set: { value: header.value } },
+        db: 'headers',
+        action: 'update'
+      };
+
+      apiFactory.db(dbRequest);
     }
   });

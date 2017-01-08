@@ -3,6 +3,7 @@
   var fs = require('fs');
   var util = require('util');
   var Datastore = require('nedb')
+
   var db = {};
   db.data = new Datastore({ filename: __dirname + '/db/data.json' });
   db.headers = new Datastore({ filename: __dirname + '/db/headers.json' });
@@ -57,16 +58,9 @@
   }
 
   function filterData(data) {
-    var headers = upgradeHeaders(data[0]);
+    upgradeHeaders(data[0]);
     data.shift();
-    var data = changeData(data);
-
-    var newDataObject = {
-      "headers": headers,
-      "data": data
-    };
-
-    // writeFile(newDataObject);
+    changeData(data);
   }
 
   function upgradeHeaders(data) {
@@ -75,11 +69,13 @@
 
     var headers2 = [];
     data.forEach((element, i) => {
-      var item = { text: element, value: false, index: i };
+      var item = { text: element, value: 0, index: i };
       headers2.push(item);
     });
   
-    return headers2;
+     db.headers.insert(headers2, function (err, newDocs) {
+      console.log(err); 
+    });
   }
 
   function changeData(data) {
@@ -94,15 +90,8 @@
 
       newData.push(newRow);
     });
-
    
-    writeFile(newData);
-    // db.insert(newData, function (err, newDocs) {});
-    // writeFile(newData);
-  }
-
-  function writeFile(data) {
-    db.data.insert(data, function (err, newDocs) {
+    db.data.insert(newData, function (err, newDocs) {
       console.log(err); 
     });
   }
