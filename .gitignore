@@ -10,6 +10,7 @@ build
 **/data.json
 **/headers.json
 **/*.config
+**/data.xlsx
 
 #files
 *.tgz
