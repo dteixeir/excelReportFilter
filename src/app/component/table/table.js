@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp.component.table')
-  .controller('TableCtrl', function ($routeParams, $scope, $filter, $location, $window, auth, apiFactory) {
+  .controller('TableCtrl', function ($routeParams, $scope, $filter, $location, $window, auth, apiFactory, $uibModal) {
     var vm = this;
 
     // functions
@@ -22,6 +22,7 @@ angular.module('clientApp.component.table')
     vm.neDbFilter = neDbFilter;
     vm.padData = padData;
     vm.exportData = exportData;
+    vm.download = download;
 
     vm.dropDown = '';
     vm.data = [];
@@ -31,11 +32,8 @@ angular.module('clientApp.component.table')
     vm.filterGroup = '$';
     vm.searchText = '';
     vm.currentIndex = vm.all;
-    vm.pagination = false;
-    vm.page = 1;
 
     vm.getHeaders();    
-    // vm.indexs.unshift({ index: '$', text: '-- All --' });
     
     // $ matches against all sub objects - requires special functionality to put it in a select statement
     function setFilterGroup(header) {
@@ -49,7 +47,13 @@ angular.module('clientApp.component.table')
     }
 
     function getFilter() {
+      vm.filterData = $filter('filter')(vm.data, vm.searchText[vm.filterGroup]);
+      apiFactory.exportData(vm.filterData);
       return vm.searchText[vm.filterGroup];
+    }
+
+    function download() {
+      window.location.assign('db/data.xlsx');
     }
 
     function getOrder(index) {
@@ -101,7 +105,7 @@ angular.module('clientApp.component.table')
         request: {},
         db: 'data',
         action: 'get',
-        pagination: vm.pagination,
+        // pagination: vm.pagination,
         filter: headerFilter
       };
 
@@ -134,7 +138,6 @@ angular.module('clientApp.component.table')
     }
 
     function exportData() {
-      vm.filterData = $filter('filter')(vm.data, vm.getFilter());
-      apiFactory.exportData(vm.filterData);
+      
     }
   });

@@ -136,6 +136,10 @@ th {
   float: left;
   margin-left: 10px; }
 
+.float-right {
+  float: right;
+  margin-right: 10px; }
+
 .padding-15 {
   padding: 15px; }
 

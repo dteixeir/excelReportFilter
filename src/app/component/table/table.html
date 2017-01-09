@@ -13,7 +13,7 @@
   <!-- drop down -->
   <div class="col-md-3 dropdown">
     <div class="dropdown">
-      <button class="row btn btn-default btn-block dropdown-toggle center" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <button class="row btn btn-default btn-block dropdown-toggle center" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
         <i class="col-md-2 padding-none fa fa-lg fa-caret-down"></i>
         <span class="col-md-10 ellipsis">{{vm.currentIndex.text}}</span>
       </button>
@@ -25,14 +25,20 @@
     </div>
   </div>
 
-  <label>
+  <!--<label>
       <input class="refresh-button" type="checkbox" ng-change="vm.getHeaders()" ng-model="vm.pagination"/>
       <span class="refresh-button custom-control-description">Pagination?</span>
-  </label>
+  </label>-->
 
-  <button ng-click="vm.exportData();" class="refresh-button btn btn-default">
-    <i class="fa fa-sign-out"></i>
+  <!--<button ng-click="vm.exportData();" class="float-right btn btn-default" href="../../../db/data.xlsx" download="expenses.pdf">
+    Export To Excel
+  </button>-->
+  <button ng-click="vm.download()">
+    hello
   </button>
+  <a target="_self" href="db/data.xlsx" download="data.xlsx">Export To Excel</a>
+  <!--<button ng-click="vm.openModal();" class="float-right btn btn-default">
+  </button>-->
 </div>
 
 <!-- table -->

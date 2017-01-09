@@ -13,9 +13,6 @@
                 exportData: function (data) {
                     return new Promise(function (resolve, reject) {
                         ipcRenderer.send('exportData', data);                      
-                        ipcRenderer.once('exportData-reply', (event, arg) => { 
-                            resolve(arg);
-                        });
                     });
                 }
             }
