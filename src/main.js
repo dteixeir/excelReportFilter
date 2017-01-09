@@ -31,9 +31,6 @@ dbRequest = function (arg) {
     switch (arg.action) {
         case 'get':
             var query = db.find(arg.request, arg.filter).sort(arg.sort);
-            if (arg.pagination) {
-                query = query.skip(0).limit(50);
-            } 
             query.exec(function (err, docs) {
                 console.log(err);
                 deferred.resolve(docs);
