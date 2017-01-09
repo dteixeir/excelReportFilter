@@ -11,6 +11,7 @@ build
 **/headers.json
 **/*.config
 **/data.xlsx
+**/*.DS_Store
 
 #files
 *.tgz
