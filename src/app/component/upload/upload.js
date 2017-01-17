@@ -1,20 +1,16 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name clientApp.controller:MovieViewCtrl
- * @description
- * # MovieViewCtrl
- * Controller of the clientApp
- */
 angular.module('clientApp.component.upload')
-  .controller('UploadCtrl', function ($routeParams, $http, $location, $window, auth) {
-    var vm = this;
+  .controller('UploadCtrl', function ($window, $scope, $rootScope) {
 
+    var vm = this;
+    
+    vm.worksheets = angular.fromJson(localStorage.getItem('sheetNames'));
+    vm.selectedSheet = '';
+      
     $window.addEventListener('drop', function (event) {
       event.preventDefault();
       $window.location.href = '#/settings';
     }, false);
-
     
   });

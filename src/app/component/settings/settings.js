@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clientApp.component.settings')
-  .controller('SettingsCtrl', function ($http, $scope, $routeParams, $location, $rootScope, $window, auth, ipcRenderer, apiFactory) {
+  .controller('SettingsCtrl', function ($http, $scope, $routeParams, $location, $rootScope, $window, ipcRenderer, apiFactory) {
     var vm = this;
 
     // functions

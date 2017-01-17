@@ -4,7 +4,6 @@
   angular.module('clientApp')
 
   .config(function ($routeProvider, $httpProvider) {
-    $httpProvider.interceptors.push('auth');
     $routeProvider
 
       .when('/upload', {

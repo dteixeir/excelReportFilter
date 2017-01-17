@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp.component.table')
-  .controller('TableCtrl', function ($routeParams, $scope, $filter, $location, $window, auth, apiFactory, $uibModal) {
+  .controller('TableCtrl', function ($routeParams, $scope, $filter, $location, $window, apiFactory, $uibModal) {
     var vm = this;
 
     // functions
@@ -21,8 +21,9 @@ angular.module('clientApp.component.table')
     vm.getHeaders = getHeaders;
     vm.neDbFilter = neDbFilter;
     vm.padData = padData;
-    vm.exportData = exportData;
-    vm.download = download;
+    vm.exportToExcel = exportToExcel;
+    vm.exportToApi = exportToApi;
+    vm.convertHeadersToJson = convertHeadersToJson;
 
     vm.dropDown = '';
     vm.data = [];
@@ -32,6 +33,7 @@ angular.module('clientApp.component.table')
     vm.filterGroup = '$';
     vm.searchText = '';
     vm.currentIndex = vm.all;
+    vm.jsonHeaders = {};
 
     vm.getHeaders();    
     
@@ -48,11 +50,52 @@ angular.module('clientApp.component.table')
 
     function getFilter() {
       vm.filterData = $filter('filter')(vm.data, vm.searchText[vm.filterGroup]);
-      apiFactory.exportData(vm.filterData);
+      exportToApi(vm.filterData);
+      
       return vm.searchText[vm.filterGroup];
     }
 
-    function download() {
+    function convertHeadersToJson() {
+      if (!vm.headers) {
+        return;
+      }
+
+      vm.jsonHeaders = {}; // reset object
+
+      vm.headers.forEach((element) => { 
+        vm.jsonHeaders[element.index] = element;
+      });
+
+      return vm.jsonHeaders;
+    }
+
+    function exportToApi(data) {
+      var headers = vm.convertHeadersToJson();
+
+      if (data.length < 1 || !vm.headers || !headers) {
+        return;
+      }
+
+      // Due to naming of columns based upon index, have to convert headers to json
+      // Avert you eyes... this may be ugly...
+      data.forEach((row) => {
+        for (var key in row) {
+          if (headers[key] && headers[key].hasOwnProperty('text')) {
+            row[headers[key].text] = row[key];
+            delete row[key];
+          }
+        }
+      });
+
+      var options = [];
+      vm.headers.forEach((obj) => { 
+        options.push(obj.text);
+      });
+
+      apiFactory.exportData({data: data, options: options});
+    }
+
+    function exportToExcel() {
       window.location.assign('db/data.xlsx');
     }
 
@@ -135,9 +178,5 @@ angular.module('clientApp.component.table')
         });
       });
       $scope.$apply(vm.data = data);
-    }
-
-    function exportData() {
-      
     }
   });

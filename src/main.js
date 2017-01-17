@@ -58,7 +58,11 @@ getDb = function (db) {
 }
 
 exportData = function (data) {
-    var xls = json2xls(data);
+    if (!data.data || !data.options) {
+        return;
+    }
+
+    var xls = json2xls(data.data, {fields: data.options});
     fs.writeFileSync(__dirname + '/db/data.xlsx', xls, 'binary');
 }
 
