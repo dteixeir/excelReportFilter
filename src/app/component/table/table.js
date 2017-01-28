@@ -1,14 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name clientApp.controller:MovieViewCtrl
- * @description
- * # MovieViewCtrl
- * Controller of the clientApp
- */
 angular.module('clientApp.component.table')
-  .controller('TableCtrl', function ($routeParams, $scope, $filter, $location, $window, apiFactory, $uibModal) {
+  .controller('TableCtrl', function ($scope, $filter, apiFactory) {
     var vm = this;
 
     // functions

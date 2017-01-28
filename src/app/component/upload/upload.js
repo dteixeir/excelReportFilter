@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clientApp.component.upload')
-  .controller('UploadCtrl', function ($window, $scope, $rootScope) {
+  .controller('UploadCtrl', function ($window) {
 
     var vm = this;
       
