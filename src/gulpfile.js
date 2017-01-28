@@ -30,7 +30,6 @@ var paths = {
     'test/mock/**/*.js',
     'test/spec/**/*.js'
   ],
-  karma: 'karma.conf.js',
   views: {
     main: yeoman.app + '/index.html',
     files: [yeoman.app + '/**/*.html']
@@ -129,15 +128,6 @@ gulp.task('serve:prod', function() {
     livereload: true,
     port: 9000
   });
-});
-
-gulp.task('test', ['start:server:test'], function () {
-  var testToFiles = paths.testRequire.concat(paths.scripts, paths.test);
-  return gulp.src(testToFiles)
-    .pipe($.karma({
-      configFile: paths.karma,
-      action: 'watch'
-    }));
 });
 
 // inject bower components
