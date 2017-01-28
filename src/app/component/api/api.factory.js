@@ -14,6 +14,14 @@
                     return new Promise(function (resolve, reject) {
                         ipcRenderer.send('exportData', data);                      
                     });
+                },
+                loadDb: function () {
+                    return new Promise(function (resolve, reject) {
+                        ipcRenderer.send('loadDb'); 
+                        ipcRenderer.once('loadDb-reply', (event, arg) => { 
+                            resolve(arg);
+                        });
+                    });
                 }
             }
         });

@@ -5,9 +5,17 @@
   </div>
 </div>
 
+<div class='row'>
+  <div class="col-md-3 padding-15 form-group" ng-if="vm.worksheets">
+    <select ng-model="vm.selectedSheet" ng-change="vm.select()" class="form-control" id="select">
+      <option ng-repeat="sheet in vm.worksheets track by $index">{{::sheet}}</option>
+    </select>
+  </div>
+</div>
+
 <div class="row">
   <ul class="col-md-6 padding-15 list-group">
-    <li class='row list-group-item' ng-repeat="header in vm.headers | filter: vm.searchText">
+    <li class='row list-group-item' ng-repeat="header in vm.headers | orderBy: 'text' | filter: vm.searchText">
         <div class="col-xs-1">
           <input ng-click="vm.headerToggle(header)" 
                   type="checkbox" 

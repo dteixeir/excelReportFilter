@@ -25,18 +25,13 @@
     </div>
   </div>
 
-  <!--<label>
-      <input class="refresh-button" type="checkbox" ng-change="vm.getHeaders()" ng-model="vm.pagination"/>
-      <span class="refresh-button custom-control-description">Pagination?</span>
-  </label>-->
-
   <button class="btn btn-default" ng-click="vm.exportToExcel()">
     Export To Excel
   </button>
 </div>
 
 <!-- table -->
-<table class="table table-striped">
+<table ng-if="vm.headers.length > 0" class="table table-striped">
   <thead>
     <tr>
       <th ng-click="vm.sort(header.index);" ng-repeat="header in vm.headers">

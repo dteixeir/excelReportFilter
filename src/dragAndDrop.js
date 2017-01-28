@@ -2,14 +2,10 @@
   const xlsx = require('xlsx');
   var fs = require('fs');
   var util = require('util');
-  var Datastore = require('nedb')
+  var Datastore = require('nedb');
 
   var db = {};
-  db.data = new Datastore({ filename: __dirname + '/db/data.json' });
-  db.headers = new Datastore({ filename: __dirname + '/db/headers.json' });
-  db.data.loadDatabase();
-  db.headers.loadDatabase();
-
+  var tabs = [];
 
   document.addEventListener('dragover', function (event) {
     event.preventDefault();
@@ -18,24 +14,13 @@
 
   document.addEventListener('drop', function (event) {
     event.preventDefault();
-
+      clearDb();
       file = event.dataTransfer.files;
       
       if (file.length == 1) {
         var fileName = file[0].name;
         
         if (checkFileType(fileName)) {
-
-          fs.writeFile(__dirname + '/settings.json', util.format('{}', ''));
-
-          var settings = {
-            filePath: file[0].path,
-            fileName: file,
-            columnHeaders: []
-          }
-
-          fs.writeFile(__dirname + '/settings.json', util.format('%j', settings));
-
           readFile(file[0].path);
         }
       }
@@ -47,38 +32,63 @@
     try {
       let file = xlsx.readFile(filePath);
       let name = file.SheetNames;
-      let data = file.Sheets['ICSW Detail'];
-      data = xlsx.utils.sheet_to_row_object_array(data, { header: 1 });
 
-      filterData(data);   
+      for (var i = 0; i < file.SheetNames.length; i++) {
+        let data = file.Sheets[file.SheetNames[i]];
+        data = xlsx.utils.sheet_to_row_object_array(data, { header: 1 });
+        filterData(data, file.SheetNames[i]); 
+      }
+      
+      setTabs(tabs);
 
     } catch (err) {
-      console.log(err.message);
+      if (err) throw err;
     }
   }
 
-  function filterData(data) {
-    upgradeHeaders(data[0]);
-    data.shift();
-    changeData(data);
+  function setTabs(tabs) {
+    var obj = {};
+
+    tabs.forEach((tab) => {
+      obj[tab] = 0;
+    });
+
+    localStorage.setItem('tabs', JSON.stringify(obj));
   }
 
-  function upgradeHeaders(data) {
-    if (!data)
-      return;  
+  function filterData(data, dbName) {
+    upgradeHeaders(data[0], dbName);
+    data.shift();
+    changeData(data, dbName);
+    tabs.push(dbName);
+  }
 
+  function upgradeHeaders(data, dbName) {
+    if (!data || data.length <= 0)
+      return;  
+    
+    
     var headers2 = [];
     data.forEach((element, i) => {
       var item = { text: element, value: 0, index: i };
       headers2.push(item);
     });
-  
-     db.headers.insert(headers2, function (err, newDocs) {
-      console.log(err); 
+
+    createDb(dbName + '.headers', headers2);
+  }
+
+  function createDb(dbName, data) {
+    if (data.length <= 0)
+      return;  
+
+    db[dbName] = new Datastore({ filename: __dirname + '/db/' + dbName + '.json' });
+    db[dbName].loadDatabase();
+    db[dbName].insert(data, function (err, newDocs) {
+      if (err) throw err;
     });
   }
 
-  function changeData(data) {
+  function changeData(data, dbName) {
     var newData = [];
 
     data.forEach((row, i1) => {
@@ -91,9 +101,7 @@
       newData.push(newRow);
     });
    
-    db.data.insert(newData, function (err, newDocs) {
-      console.log(err); 
-    });
+    createDb(dbName + '.data', newData);
   }
 
   function checkFileType(fileName) {
@@ -101,5 +109,14 @@
     return nameParts[nameParts.length - 1] === 'xlsx';
   }
 
+  function clearDb() {
+    fs.readdir(__dirname + '/db/', (err, files) => {
+      files.forEach((file) => {
+        fs.unlink(__dirname + '/db/' + file, (err) => {
+          if (err) throw err;
+        });
+      });
+    });
+  }
 
 })();

@@ -10,29 +10,63 @@ angular.module('clientApp.component.settings')
     vm.scrubData = scrubData;
     vm.headerToggle = headerToggle;
 
+    vm.select = select;
+    vm.getTabs = getTabs;
+
+    // Variables
+    vm.activeTab = localStorage.getItem('activeTab');
+    console.log(vm.activeTab);
     vm.headers = [];
+    vm.worksheets = [];
+    vm.setDefault = setDefault;
+    vm.loadDb = loadDb;
 
-    vm.getSettings();
-
-    function scrubData() {
-      vm.headers.forEach((element) => { 
-        if (element.value) {
-          element.value = 1;
-        } else {
-          element.value = 0;
-        }
+    vm.loadDb();    
+       
+    
+    function loadDb() {
+      apiFactory.loadDb().then(() => { 
+        vm.getTabs();    
+        vm.setDefault(); 
+        vm.getSettings();
       });
+    }
+    
+    function setDefault() {
+      vm.selectedSheet = vm.activeTab ? vm.activeTab : vm.tabs[0];
+      vm.getSettings();
+    }
+
+    function getTabs() {
+      var tabs = angular.fromJson(localStorage.getItem('tabs'));
+
+      for (var key in tabs) {
+        vm.worksheets.push(key);
+      }
     }
 
     function getSettings() {
-      var dbRequest = {
-        request: {},
-        db: 'headers',
-        action: 'get'
-      };
+      if (vm.selectedSheet) {
+        var dbRequest = {
+          request: {},
+          db: vm.selectedSheet + '.headers',
+          action: 'get'
+        };
 
-      apiFactory.db(dbRequest).then((data) => {
-        $scope.$apply(vm.headers = data);
+        apiFactory.db(dbRequest).then((data) => {
+          $scope.$apply(vm.headers = data);
+        });
+      }
+    }
+
+    function select() {
+      localStorage.setItem('activeTab', vm.selectedSheet);
+      vm.getSettings();
+    }
+
+    function scrubData() {
+      vm.headers.forEach((element) => { 
+        element.value = element.value ? 1 : 0;
       });
     }
 
@@ -45,7 +79,7 @@ angular.module('clientApp.component.settings')
       var dbRequest = {
         request: { _id: header._id },
         filter: { $set: { value: header.value } },
-        db: 'headers',
+        db: vm.selectedSheet + '.headers',
         action: 'update'
       };
 

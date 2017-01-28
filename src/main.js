@@ -13,48 +13,79 @@ const fs = require('fs');
 
 const logger = require('winston');
 var ipcMain = require('electron').ipcMain;
+var _db = {};
 
 ipcMain.on('dbRequest', (event, arg) => {
-    dbRequest(arg).then((data) => {
+  if (isEmpty(_db)) {
+    loadDb().then(() => {
+      dbRequest(arg).then((data) => {
         event.sender.send('dbRequest-reply-' + arg.db, data);
+      });
     });
+  } else {
+    dbRequest(arg).then((data) => {
+      event.sender.send('dbRequest-reply-' + arg.db, data);
+    });
+  }
 });
 
-ipcMain.on('exportData', (event, arg) => {
-    exportData(arg);
-});
-
-dbRequest = function (arg) {
-    var deferred = $q.defer();
-    var db = getDb(arg.db);
-
-    switch (arg.action) {
-        case 'get':
-            var query = db.find(arg.request, arg.filter).sort(arg.sort);
-            query.exec(function (err, docs) {
-                console.log(err);
-                deferred.resolve(docs);
-            });
-            break;
-            
-        case 'update':
-            db.update(arg.request, arg.filter, { multi: false }, function (err, docs) {
-                console.log(err);
-                deferred.resolve(docs);
-            });
-            break;
+isEmpty = function(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
     }
-    return deferred.promise;
+    return true;
 }
 
-getDb = function (db) {
-    switch (db) {
-        case 'headers':
-            return _db.headers;
-            
-        case 'data':
-            return _db.data;    
-    }
+ipcMain.on('exportData', (event, arg) => {
+  exportData(arg);
+});
+
+ipcMain.on('loadDb', (event, arg) => {
+  if (isEmpty(_db)) {
+    loadDb().then(() => { 
+      event.sender.send('loadDb-reply');
+    });
+  } else {
+    event.sender.send('loadDb-reply');
+  }
+});
+
+loadDb = function () {
+  var deferred = $q.defer();
+  fs.readdir(__dirname + '/db/', (err, files) => {
+    files.forEach((file, i) => {
+      _db[file] = new Datastore({ filename: __dirname + '/db/' + file });
+      _db[file].loadDatabase();
+      if (files.length - 1 == i) {
+        deferred.resolve();
+      }
+    });
+  });
+  return deferred.promise;
+}
+
+dbRequest = function (arg) {
+  var deferred = $q.defer();
+  var db = _db[arg.db + '.json'];
+
+  switch (arg.action) {
+      case 'get':
+          var query = db.find(arg.request, arg.filter).sort(arg.sort);
+          query.exec(function (err, docs) {
+              if (err) throw err;
+              deferred.resolve(docs);
+          });
+          break;
+          
+      case 'update':
+          db.update(arg.request, arg.filter, { multi: false }, function (err, docs) {
+              if (err) throw err;
+              deferred.resolve(docs);
+          });
+          break;
+  }
+  return deferred.promise;
 }
 
 exportData = function (data) {
@@ -65,12 +96,6 @@ exportData = function (data) {
     var xls = json2xls(data.data, {fields: data.options});
     fs.writeFileSync(__dirname + '/db/data.xlsx', xls, 'binary');
 }
-
-var _db = {};
-_db.data = new Datastore({ filename: __dirname + '/db/data.json' });
-_db.headers = new Datastore({ filename: __dirname + '/db/headers.json' });
-_db.data.loadDatabase();
-_db.headers.loadDatabase();
 
 // Keep reference of main window because of GC
 var mainWindow = null;

@@ -25,15 +25,16 @@ angular.module('clientApp.component.table')
     vm.exportToApi = exportToApi;
     vm.convertHeadersToJson = convertHeadersToJson;
 
+    // variables    
     vm.dropDown = '';
     vm.data = [];
     vm.sortOrder = '0';
     vm.all = { text: '-- All --', index: '$' };
-    
     vm.filterGroup = '$';
     vm.searchText = '';
     vm.currentIndex = vm.all;
     vm.jsonHeaders = {};
+    vm.activeTab = localStorage.getItem('activeTab');
 
     vm.getHeaders();    
     
@@ -120,7 +121,7 @@ angular.module('clientApp.component.table')
       var dbRequest = {
         request: { value: 1 },
         filter: { _id: 0 },
-        db: 'headers',
+        db: vm.activeTab + '.headers',
         action: 'get',
         pagination: false,
         sort: {index: 1}
@@ -146,7 +147,7 @@ angular.module('clientApp.component.table')
     function getData(headerFilter) {
       var dbRequest = {
         request: {},
-        db: 'data',
+        db: vm.activeTab + '.data',
         action: 'get',
         // pagination: vm.pagination,
         filter: headerFilter
@@ -154,7 +155,6 @@ angular.module('clientApp.component.table')
 
       apiFactory.db(dbRequest).then((data) => {
         vm.padData(data);
-        
       });
     }
 
