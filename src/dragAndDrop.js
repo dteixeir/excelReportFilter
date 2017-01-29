@@ -60,7 +60,6 @@
     upgradeHeaders(data[0], dbName);
     data.shift();
     changeData(data, dbName);
-    tabs.push(dbName);
   }
 
   function upgradeHeaders(data, dbName) {
@@ -74,6 +73,7 @@
       headers2.push(item);
     });
 
+    tabs.push(dbName);    
     createDb(dbName + '.headers', headers2);
   }
 

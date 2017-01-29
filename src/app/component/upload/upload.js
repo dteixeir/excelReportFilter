@@ -7,6 +7,6 @@ angular.module('clientApp.component.upload')
       
     $window.addEventListener('drop', function (event) {
       event.preventDefault();
-      $window.location.href = '#/settings';
+      // $window.location.href = '#/settings';
     }, false);
   });
