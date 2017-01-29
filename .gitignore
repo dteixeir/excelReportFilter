@@ -17,3 +17,6 @@ build
 *.tgz
 *.log
 src/db/**
+ExcelFilter-darwin-x64
+ExcelFilter-win32-x64
+.DS_Store
