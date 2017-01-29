@@ -2,12 +2,17 @@
   "name": "excel-file-filter",
   "description": "Electron shell with an angular project for filtering excel data dynamically",
   "scripts": {
-    "start": "electron src"
+    "start": "electron src",
+    "build": "electron-packager ./src ExcelFilter --all",
+    "pack": "asar pack ./ExcelFilter-darwin-x64/ExcelFilter.app/Contents/Resources/app ./ExcelFilter-darwin-x64/ExcelFilter.app/Contents/Resources/app.asar"
   },
   "devDependencies": {
+    "asar": "^0.13.0",
     "copyfiles": "~1.0.0",
     "electron-builder": "5.12.X",
+    "electron-packager": "^8.5.1",
     "electron-prebuilt": "~1.2.X",
+    "electron-squirrel-startup": "^1.0.0",
     "live-reload": "~1.1.0",
     "mkdirp": "~0.5.1",
     "nedb": "^1.8.0",

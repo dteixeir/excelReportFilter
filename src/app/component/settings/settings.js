@@ -15,7 +15,6 @@ angular.module('clientApp.component.settings')
 
     // Variables
     vm.activeTab = localStorage.getItem('activeTab');
-    console.log(vm.activeTab);
     vm.headers = [];
     vm.worksheets = [];
     vm.setDefault = setDefault;
