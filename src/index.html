@@ -5,23 +5,13 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!--<link rel="stylesheet" href="app/bower_components/bootstrap/dist/js/bootstrap.js" />-->
-    <!-- endbower -->
-    <!-- endbuild -->
 
-    <script type="text/javascript" src="app/bower_components/jquery/dist/jquery.js"></script> 
+    <script type="text/javascript" src="app/node_modules/jquery/dist/jquery.js"></script> 
     <script type="text/javascript" src="dragAndDrop.js"></script>
-
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="app/bower_components/bootstrap/dist/js/bootstrap.js">
     <link rel="stylesheet" href="app/styles/main.css">
-    <!-- endbuild -->
   </head>
-  <body ng-app="clientApp">
 
+  <body ng-app="clientApp">
     <div class="header">
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="">
@@ -38,36 +28,46 @@
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
             <ul class="nav navbar-nav">
-              <li><a ng-href="#/upload">Upload</a></li>
-              <li><a ng-href="#/settings">Settings</a></li>
-              <li><a ng-href="#/table">Table</a></li>
+              <li><a ui-sref="upload">Upload</a></li>
+              <li><a ui-sref="settings">Settings</a></li>
+              <li><a ui-sref="table">Table</a></li>
             </ul>
           </div>
         </div>
       </div>
+      
+      <!--<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="">
+          <div class="navbar-header">
+              <a ui-sref="upload">Upload</a>
+              <a ui-sref="settings">Settings</a>
+              <a ui-sref="table">Table</a>
+          </div>
+        </div>
+      </div>-->
     </div>
-    <div ng-view></div>
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script src="app/bower_components/angular/angular.js"></script>
-    <script src="../src/node_modules/angular-electron/angular-electron.js"></script>
-    <script src="../src/node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script> 
-    <script src="../src/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script> 
+    <div ui-view></div>
+
+    <script src="app/node_modules/jquery/dist/jquery.js"></script>
+    <script src="app/node_modules/bootstrap/dist/js/bootstrap.js"></script> 
+
+    <script src="app/node_modules/angular/angular.js"></script>
+    <script src="app/node_modules/angular-ui-router/release/angular-ui-router.js"></script> 
+    <script src="app/node_modules/angular-electron/angular-electron.js"></script>
+    <script src="app/node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script> 
+    <script src="app/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script> 
     
-    <script src="app/bower_components/jquery/dist/jquery.js"></script>
-    <script src="app/bower_components/bootstrap/dist/js/bootstrap.js"></script>  
-    <script src="app/bower_components/angular-route/angular-route.js"></script>
-    <script src="app/bower_components/lodash/lodash.js"></script>
-    <script src="app/bower_components/angular-resource/angular-resource.js"></script>
-    <script src="app/bower_components/moment/moment.js"></script>
+    
+    <script src="app/node_modules/angular-route/angular-route.js"></script>
+    <!--<script src="app/bower_components/lodash/lodash.js"></script>-->
+    <script src="app/node_modules/angular-resource/angular-resource.js"></script>
+    <!--<script src="app/bower_components/moment/moment.js"></script>-->
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- show links -->
     <!-- api links -->
-
-    <!-- episodeLapp/ist links --> 
     <script src="app/component/component.module.js"></script>
 
     <script src="app/component/table/table.module.js"></script>
@@ -81,10 +81,6 @@
 
     <script src="app/component/api/api.module.js"></script>
     <script src="app/component/api/api.factory.js"></script>
-
-    <!-- directivapp/e -->
-    <!--<script src="app/directive/directive.module.js"></script> -->
-    <!-- filter --> 
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="app/app.module.js"></script>

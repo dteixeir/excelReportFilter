@@ -1,5 +1,5 @@
 (function () {  
-  const xlsx = require('xlsx');
+  var xlsx = require('xlsx');
   var fs = require('fs');
   var util = require('util');
   var Datastore = require('nedb');

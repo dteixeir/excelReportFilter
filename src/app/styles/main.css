@@ -1,5 +1,5 @@
-@import url(../bower_components/font-awesome-bower/css/font-awesome.css);
-@import url(../bower_components/bootstrap/dist/css/bootstrap.css);
+@import url(../node_modules/font-awesome/css/font-awesome.css);
+@import url(../node_modules/bootstrap/dist/css/bootstrap.css);
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -124,17 +124,13 @@ th {
   overflow: hidden; }
 
 .padding-verticle {
-  padding: 10px 0; }
+  padding: 15px 0; }
 
 .float-none {
   float: none; }
 
 .no-margin {
   margin: 0 !important; }
-
-.refresh-button {
-  float: left;
-  margin-left: 10px; }
 
 .float-right {
   float: right;

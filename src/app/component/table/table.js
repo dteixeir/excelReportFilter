@@ -28,6 +28,7 @@ angular.module('clientApp.component.table')
     vm.currentIndex = vm.all;
     vm.jsonHeaders = {};
     vm.activeTab = localStorage.getItem('activeTab');
+    vm.filterData = vm.data;
 
     vm.getHeaders();    
     
@@ -43,8 +44,11 @@ angular.module('clientApp.component.table')
     }
 
     function getFilter() {
-      vm.filterData = $filter('filter')(vm.data, vm.searchText[vm.filterGroup]);
+      vm.filterData = $filter('filter')(vm.data, vm.searchText);
       exportToApi(vm.filterData);
+
+      var stuff = vm.searchText[vm.filterGroup];
+      var stuff2 = vm.filterData;
       
       return vm.searchText[vm.filterGroup];
     }

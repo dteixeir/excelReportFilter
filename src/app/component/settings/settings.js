@@ -17,6 +17,7 @@ angular.module('clientApp.component.settings')
     vm.activeTab = localStorage.getItem('activeTab');
     vm.headers = [];
     vm.worksheets = [];
+    vm.tabs = [];
     vm.setDefault = setDefault;
     vm.loadDb = loadDb;
 
@@ -37,9 +38,9 @@ angular.module('clientApp.component.settings')
     }
 
     function getTabs() {
-      var tabs = angular.fromJson(localStorage.getItem('tabs'));
+      vm.tabs = angular.fromJson(localStorage.getItem('tabs'));
 
-      for (var key in tabs) {
+      for (var key in vm.tabs) {
         vm.worksheets.push(key);
       }
     }
@@ -53,7 +54,8 @@ angular.module('clientApp.component.settings')
         };
 
         apiFactory.db(dbRequest).then((data) => {
-          $scope.$apply(vm.headers = data);
+          vm.headers = data
+          // $scope.$apply(vm.headers = data);
         });
       }
     }

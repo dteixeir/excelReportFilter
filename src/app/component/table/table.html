@@ -1,34 +1,37 @@
-<div class="row padding-verticle">
-  <!-- refresh button -->
-  <button ng-click="vm.refresh()" class="refresh-button btn btn-default">
-    <i class="fa fa-refresh"></i>
-  </button>
+<form class="form-horizontal no-margin">
+  <div class="form-group no-margin padding-verticle">
+    <label for="refresh" class="control-label sr-only">Refresh</label>
+    <div class="col-sm-1">
+      <button ng-click="vm.refresh()" class="refresh-button btn btn-default">
+        <i class="fa fa-refresh"></i>
+      </button>    
+    </div>
 
-  <!-- search text field -->
-  <div class="col-md-4 no-margin form-group">
-    <label class="sr-only" for="searchText">Search Text</label>
-    <input type="text" ng-model="vm.searchText[vm.filterGroup]" class="form-control" id="searchText" placeholder="Search...">
-  </div>
+    <label for="searchText" class="control-label sr-only">Search Text</label>
+    <div class="col-sm-4">
+      <input type="text" ng-model="vm.searchText" class="form-control" id="searchText" placeholder="Search...">
+    </div>
 
-  <!-- drop down -->
-  <div class="col-md-3 dropdown">
-    <div class="dropdown">
-      <button class="row btn btn-default btn-block dropdown-toggle center" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
-        <i class="col-md-2 padding-none fa fa-lg fa-caret-down"></i>
-        <span class="col-md-10 ellipsis">{{vm.currentIndex.text}}</span>
+    <div class="col-sm-3">
+      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" >
+        <i class="padding-none fa fa-lg fa-caret-down"></i>
+        <span class="ellipsis">{{vm.currentIndex.text}}</span>
       </button>
 
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+      <ul class="dropdown-menu">
         <li ng-click="vm.setFilterGroup('$')" ><a>-- All --</a></li>
         <li ng-click="vm.setFilterGroup(header)" ng-repeat="header in vm.headers | orderBy: 'text'"><a>{{header.text}}</a></li>
       </ul>
     </div>
-  </div>
 
-  <button class="btn btn-default" ng-click="vm.exportToExcel()">
-    Export To Excel
-  </button>
-</div>
+
+    <div class="col-md-2 pull-right">
+      <button class="btn btn-default pull-right" ng-click="vm.exportToExcel()">
+        Export To Excel
+      </button>
+    </div>
+  </div>
+</form>
 
 <!-- table -->
 <table ng-if="vm.headers.length > 0" class="table table-striped">
@@ -41,7 +44,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="record in vm.data | orderBy: vm.sortOrder | filter: vm.getFilter() track by $index">
+    <tr ng-repeat="record in vm.filterData | orderBy: vm.sortOrder | filter: vm.getFilter() track by $index">
       <td ng-repeat="cell in record track by $index">{{cell}}</td>
     </tr>
   </tbody>

@@ -13,14 +13,18 @@
     "electron-packager": "^8.5.1",
     "electron-prebuilt": "~1.2.X",
     "electron-squirrel-startup": "^1.0.0",
+    "express": "^4.14.1",
+    "json2xls": "^0.1.2",
     "live-reload": "~1.1.0",
     "mkdirp": "~0.5.1",
     "nedb": "^1.8.0",
     "npm-run-all": "~2.3.0",
+    "path": "^0.12.7",
     "q": "^1.4.1",
     "rimraf": "~2.5.3",
     "util": "^0.10.3",
-    "xlsx": "^0.8.0",
+    "winston": "^2.3.1",
+    "xlsx": "^0.8.6",
     "xlsx-to-json": "^0.2.4"
   }
 }

@@ -3,30 +3,35 @@
 
   angular.module('clientApp')
 
-  .config(function ($routeProvider, $httpProvider) {
-    $routeProvider
+    .config(function ($urlRouterProvider, $stateProvider, $httpProvider) {
+      // $urlRouterProvider.otherwise('/upload');
+      $urlRouterProvider.otherwise('/upload');
+      $stateProvider
 
-      .when('/upload', {
-        templateUrl: 'app/component/upload/upload.html',
-        controller: 'UploadCtrl',
-        controllerAs: 'vm'
-      })
+        .state('upload', {
+          url: '/upload',
+          templateUrl: 'app/component/upload/upload.html',
+          controller: 'UploadCtrl',
+          controllerAs: 'vm'
+        })
 
-      .when('/settings', {
-        templateUrl: 'app/component/settings/settings.html',
-        controller: 'SettingsCtrl',
-        controllerAs: 'vm'
-      })
+        .state('settings', {
+          url: '/settings',
+          templateUrl: 'app/component/settings/settings.html',
+          controller: 'SettingsCtrl',
+          controllerAs: 'vm'
+        })
       
-      .when('/table', {
-        templateUrl: 'app/component/table/table.html',
-        controller: 'TableCtrl',
-        controllerAs: 'vm'
-      })   
+        .state('table', {
+          url: '/table',
+          templateUrl: 'app/component/table/table.html',
+          controller: 'TableCtrl',
+          controllerAs: 'vm'
+        });
       
-      .otherwise({
-        redirectTo: '/upload'
-      });
+      // .otherwise({
+      //   redirectTo: '/upload'
+      // });
   })
 
 }());

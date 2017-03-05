@@ -1,14 +1,16 @@
 // Handle Squirrel events for Windows immediately on start
-if(require('./node_modules/electron-squirrel-startup')) return;
+if(require('../src/app/node_modules/electron-squirrel-startup')) return;
 
 const electron = require('electron')
 const {app, BrowserWindow} = electron
 const {autoUpdater} = electron;
 const os = require('os');
-const $q = require('./node_modules/q');
-const Datastore = require('../node_modules/nedb');
-const json2xls = require('../node_modules/json2xls');
+const $q = require('../src/app/node_modules/q');
+const Datastore = require('../src/app/node_modules/nedb');
+const json2xls = require('../src/app/node_modules/json2xls');
 const fs = require('fs');
+const server = require("./server");
+
 
 const logger = require('../node_modules/winston');
 var ipcMain = require('electron').ipcMain;
@@ -116,8 +118,9 @@ app.on('ready', function() {
         toolbar: true
     });
 
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
     // Target HTML file which will be opened in window
+    // mainWindow.loadURL(`http://localhost:3333`);
     mainWindow.loadURL('file://' + __dirname + "/index.html");
 
     // Uncomment to use Chrome developer tools

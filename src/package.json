@@ -6,6 +6,7 @@
     "angular-electron": "^0.2.1",
     "angular-resource": "^1.6.0",
     "angular-ui-bootstrap": "^2.4.0",
+    "bootstrap": "^3.3.7",
     "electron-squirrel-startup": "^1.0.0",
     "font-awesome": "^4.7.0",
     "gulp": "^3.9.0",
@@ -26,6 +27,7 @@
     "gulp-useref": "^3.0.0",
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.2.4",
+    "jquery": "^3.1.1",
     "jshint-stylish": "^1.0.0",
     "lazypipe": "^0.2.4",
     "nedb": "^1.8.0",
@@ -33,14 +35,15 @@
     "q": "^1.4.1",
     "run-sequence": "^1.1.1",
     "winston": "^2.2.0",
-    "wiredep": "^2.2.2"
+    "wiredep": "^2.2.2",
+    "xlsx": "^0.8.6"
   },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
     "test": "karma start test/karma.conf.js",
-    "start": "gulp styles; electron ../src"
+    "start": "electron ../src"
   },
   "dependencies": {
     "jsdom": "^9.8.3"

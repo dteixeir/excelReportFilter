@@ -19,17 +19,16 @@ var yeoman = {
 var paths = {
   scripts: [yeoman.app + '/scripts/**/*.js'],
   styles: [yeoman.app + '/styles/**/*.scss'],
-  test: ['test/spec/**/*.js'],
-  testRequire: [
-    yeoman.app + '/bower_components/angular/angular.js',
-    yeoman.app + '/bower_components/angular-mocks/angular-mocks.js',
-    yeoman.app + '/bower_components/angular-resource/angular-resource.js',
-    yeoman.app + '/bower_components/angular-cookies/angular-cookies.js',
-    yeoman.app + '/bower_components/angular-sanitize/angular-sanitize.js',
-    yeoman.app + '/bower_components/angular-route/angular-route.js',
-    'test/mock/**/*.js',
-    'test/spec/**/*.js'
-  ],
+  // test: ['test/spec/**/*.js'],
+  // testRequire: [
+  //   yeoman.app + '/bower_components/angular/angular.js',
+  //   yeoman.app + '/bower_components/angular-resource/angular-resource.js',
+  //   yeoman.app + '/bower_components/angular-cookies/angular-cookies.js',
+  //   yeoman.app + '/bower_components/angular-sanitize/angular-sanitize.js',
+  //   yeoman.app + '/bower_components/angular-route/angular-route.js',
+  //   'test/mock/**/*.js',
+  //   'test/spec/**/*.js'
+  // ],
   views: {
     main: yeoman.app + '/index.html',
     files: [yeoman.app + '/**/*.html']
@@ -131,14 +130,14 @@ gulp.task('serve:prod', function() {
 });
 
 // inject bower components
-gulp.task('bower', function () {
-  return gulp.src(paths.views.main)
-    .pipe(wiredep({
-      directory: yeoman.app + '/bower_components',
-      ignorePath: '..'
-    }))
-  .pipe(gulp.dest(yeoman.app));
-});
+// gulp.task('bower', function () {
+//   return gulp.src(paths.views.main)
+//     .pipe(wiredep({
+//       directory: yeoman.app + '/bower_components',
+//       ignorePath: '..'
+//     }))
+//   .pipe(gulp.dest(yeoman.app));
+// });
 
 ///////////
 // Build //

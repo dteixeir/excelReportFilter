@@ -11,7 +11,8 @@
     'ngResource',
     'clientApp.component',
     'angular-electron',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.router'
   ]);
 
 }());
