@@ -1,22 +1,19 @@
 'use strict';
 
 angular.module('clientApp.component.table')
-  .controller('TableCtrl', function ($scope, $filter, apiFactory) {
+  .controller('TableCtrl', function ($scope, $filter, apiFactory, dataService) {
     var vm = this;
 
     // functions
-    vm.getData = getData;
     vm.sort = sort;
     vm.getOrder = getOrder;
     vm.setFilterGroup = setFilterGroup;
     vm.getFilter = getFilter;
     vm.refresh = refresh;
-    vm.getHeaders = getHeaders;
-    vm.neDbFilter = neDbFilter;
-    vm.padData = padData;
     vm.exportToExcel = exportToExcel;
     vm.exportToApi = exportToApi;
     vm.convertHeadersToJson = convertHeadersToJson;
+    vm.getData = getData;
 
     // variables    
     vm.dropDown = '';
@@ -29,8 +26,7 @@ angular.module('clientApp.component.table')
     vm.jsonHeaders = {};
     vm.activeTab = localStorage.getItem('activeTab');
     vm.filterData = vm.data;
-
-    vm.getHeaders();    
+    vm.getData();
     
     // $ matches against all sub objects - requires special functionality to put it in a select statement
     function setFilterGroup(header) {
@@ -43,28 +39,29 @@ angular.module('clientApp.component.table')
       }
     }
 
-    function getFilter() {
-      vm.filterData = $filter('filter')(vm.data, vm.searchText);
-      exportToApi(vm.filterData);
-
-      var stuff = vm.searchText[vm.filterGroup];
-      var stuff2 = vm.filterData;
-      
-      return vm.searchText[vm.filterGroup];
+    function getData() {
+      dataService.getHeaders(vm.activeTab).then((data) => {
+        $scope.$apply(() => {
+          vm.data = data.data;
+          vm.headers = data.headers;
+        });
+      });
     }
 
-    function convertHeadersToJson() {
-      if (!vm.headers) {
-        return;
+    function getFilter() {
+      // Looks like the headers come back as numbers the first time?
+      // so just addressed both of em. Fix later?
+      var headerText;
+      if (vm.data && !isNaN(vm.filterGroup)) {
+        var header = vm.headers.find(x => x.index === vm.filterGroup);
+        headerText = header.text;
+        vm.filterData = $filter('filter')(vm.data, { [headerText]: vm.searchText });
+      } else {
+        vm.filterData = $filter('filter')(vm.data, { [vm.filterGroup]: vm.searchText });
       }
-
-      vm.jsonHeaders = {}; // reset object
-
-      vm.headers.forEach((element) => { 
-        vm.jsonHeaders[element.index] = element;
-      });
-
-      return vm.jsonHeaders;
+      exportToApi(vm.filterData);
+      
+      return vm.searchText[vm.filterGroup];
     }
 
     function exportToApi(data) {
@@ -91,11 +88,7 @@ angular.module('clientApp.component.table')
       });
 
       apiFactory.exportData({data: data, options: options});
-    }
-
-    function exportToExcel() {
-      window.location.assign('db/data.xlsx');
-    }
+    }   
 
     function getOrder(index) {
       index = index.toString();
@@ -108,51 +101,11 @@ angular.module('clientApp.component.table')
       return 2;
     }
 
-    function refresh() {
+    function refresh(flag) {
       vm.filterGroup = '$';
       vm.searchText = '';
       vm.currentIndex = vm.all;
-    }
-
-    function getHeaders() {
-      var dbRequest = {
-        request: { value: 1 },
-        filter: { _id: 0 },
-        db: vm.activeTab + '.headers',
-        action: 'get',
-        pagination: false,
-        sort: {index: 1}
-      };
-
-      apiFactory.db(dbRequest).then((data) => { 
-        vm.headers = data;
-        vm.neDbFilter(data);
-      });
-    }
-
-    // filter for which fields to pull back    
-    function neDbFilter() {
-      var headerFilter = {_id: 0};
-      vm.headers.forEach((header) => { 
-        headerFilter[header.index] = header.value;
-      });
-
-      vm.getData(headerFilter);
-    }
-
-    // get data from db    
-    function getData(headerFilter) {
-      var dbRequest = {
-        request: {},
-        db: vm.activeTab + '.data',
-        action: 'get',
-        // pagination: vm.pagination,
-        filter: headerFilter
-      };
-
-      apiFactory.db(dbRequest).then((data) => {
-        vm.padData(data);
-      });
+      vm.getData();
     }
 
     // sort toggle logic    
@@ -165,15 +118,21 @@ angular.module('clientApp.component.table')
       }
     }
 
-    // Takes care of blank data    
-    function padData(data) {
-      data.forEach((element, e) => {
-        vm.headers.forEach((header, h) => { 
-          if (!element[header.index]) {
-            element[header.index] = '';
-          }
-        });
+    function exportToExcel() {
+      window.location.assign('db/data.xlsx');
+    }
+
+    function convertHeadersToJson() {
+      if (!vm.headers) {
+        return;
+      }
+
+      vm.jsonHeaders = {}; // reset object
+
+      vm.headers.forEach((element) => { 
+        vm.jsonHeaders[element.index] = element;
       });
-      $scope.$apply(vm.data = data);
+
+      return vm.jsonHeaders;
     }
   });

@@ -55,7 +55,7 @@ angular.module('clientApp.component.settings')
 
         apiFactory.db(dbRequest).then((data) => {
           vm.headers = data
-          // $scope.$apply(vm.headers = data);
+          $scope.$apply(vm.headers = data);
         });
       }
     }

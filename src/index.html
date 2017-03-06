@@ -6,8 +6,9 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
-    <script type="text/javascript" src="app/node_modules/jquery/dist/jquery.js"></script> 
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script> 
     <script type="text/javascript" src="dragAndDrop.js"></script>
+
     <link rel="stylesheet" href="app/styles/main.css">
   </head>
 
@@ -49,19 +50,19 @@
 
     <div ui-view></div>
 
-    <script src="app/node_modules/jquery/dist/jquery.js"></script>
-    <script src="app/node_modules/bootstrap/dist/js/bootstrap.js"></script> 
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script> 
 
-    <script src="app/node_modules/angular/angular.js"></script>
-    <script src="app/node_modules/angular-ui-router/release/angular-ui-router.js"></script> 
-    <script src="app/node_modules/angular-electron/angular-electron.js"></script>
-    <script src="app/node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script> 
-    <script src="app/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script> 
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script> 
+    <script src="node_modules/angular-electron/angular-electron.js"></script>
+    <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script> 
+    <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script> 
     
-    
-    <script src="app/node_modules/angular-route/angular-route.js"></script>
+<!--    
+    <script src="node_modules/angular-route/angular-route.js"></script>-->
     <!--<script src="app/bower_components/lodash/lodash.js"></script>-->
-    <script src="app/node_modules/angular-resource/angular-resource.js"></script>
+    <script src="node_modules/angular-resource/angular-resource.js"></script>
     <!--<script src="app/bower_components/moment/moment.js"></script>-->
     <!-- endbower -->
     <!-- endbuild -->
@@ -81,6 +82,11 @@
 
     <script src="app/component/api/api.module.js"></script>
     <script src="app/component/api/api.factory.js"></script>
+
+    <script src="app/services/services.module.js"></script>
+
+    <script src="app/services/data/data.module.js"></script>
+    <script src="app/services/data/data.js"></script>
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="app/app.module.js"></script>

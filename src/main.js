@@ -1,13 +1,13 @@
 // Handle Squirrel events for Windows immediately on start
-if(require('../src/app/node_modules/electron-squirrel-startup')) return;
+if(require('../src/node_modules/electron-squirrel-startup')) return;
 
 const electron = require('electron')
 const {app, BrowserWindow} = electron
 const {autoUpdater} = electron;
 const os = require('os');
-const $q = require('../src/app/node_modules/q');
-const Datastore = require('../src/app/node_modules/nedb');
-const json2xls = require('../src/app/node_modules/json2xls');
+const $q = require('../src/node_modules/q');
+const Datastore = require('../src/node_modules/nedb');
+const json2xls = require('../src/node_modules/json2xls');
 const fs = require('fs');
 const server = require("./server");
 
@@ -55,13 +55,15 @@ ipcMain.on('loadDb', (event, arg) => {
 loadDb = function () {
   var deferred = $q.defer();
   fs.readdir(__dirname + '/db/', (err, files) => {
-    files.forEach((file, i) => {
-      _db[file] = new Datastore({ filename: __dirname + '/db/' + file });
-      _db[file].loadDatabase();
-      if (files.length - 1 == i) {
-        deferred.resolve();
-      }
-    });
+    if (files) {
+      files.forEach((file, i) => {
+        _db[file] = new Datastore({ filename: __dirname + '/db/' + file });
+        _db[file].loadDatabase();
+        if (files.length - 1 == i) {
+          deferred.resolve();
+        }
+      });
+    }
   });
   return deferred.promise;
 }

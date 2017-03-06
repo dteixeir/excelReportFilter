@@ -7,9 +7,9 @@
   // 'app' is the name of this angular module (also set in a <body> attribute in index.html)
   // the 2nd parameter is an array of 'requires'
   angular.module('clientApp', [
-    'ngRoute',
     'ngResource',
     'clientApp.component',
+    'clientApp.services',
     'angular-electron',
     'ui.bootstrap',
     'ui.router'

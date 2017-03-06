@@ -20,5 +20,6 @@ src/db/**
 ExcelFilter-darwin-x64
 ExcelFilter-win32-x64
 **/.DS_Store
+.DS_Store
 ExcelFilter-win32-ia32
 ExcelFilter-win32-x64.zip
