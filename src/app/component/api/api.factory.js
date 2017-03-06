@@ -22,6 +22,14 @@
                             resolve(arg);
                         });
                     });
+                },
+                clearDb: function () {
+                    return new Promise(function (resolve, reject) {
+                        ipcRenderer.send('clearDb'); 
+                        ipcRenderer.once('clearDb-reply', (event, arg) => { 
+                            resolve(arg);
+                        });
+                    });
                 }
             }
         });

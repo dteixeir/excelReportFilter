@@ -9,6 +9,7 @@ angular.module('clientApp.component.settings')
     vm.getSettings = getSettings;
     vm.scrubData = scrubData;
     vm.headerToggle = headerToggle;
+    vm.deleteData = deleteData;
 
     vm.select = select;
     vm.getTabs = getTabs;
@@ -22,7 +23,6 @@ angular.module('clientApp.component.settings')
     vm.loadDb = loadDb;
 
     vm.loadDb();    
-       
     
     function loadDb() {
       apiFactory.loadDb().then(() => { 
@@ -30,6 +30,10 @@ angular.module('clientApp.component.settings')
         vm.setDefault(); 
         vm.getSettings();
       });
+    }
+
+    function deleteData() {
+      apiFactory.clearDb();
     }
     
     function setDefault() {

@@ -42,6 +42,11 @@ ipcMain.on('exportData', (event, arg) => {
   exportData(arg);
 });
 
+ipcMain.on('clearDb', (event, arg) => {
+  clearDb();
+  event.sender.send('loadDb-reply');
+});
+
 ipcMain.on('loadDb', (event, arg) => {
   if (isEmpty(_db)) {
     loadDb().then(() => { 
@@ -98,6 +103,16 @@ exportData = function (data) {
 
     var xls = json2xls(data.data, {fields: data.options});
     fs.writeFileSync(__dirname + '/db/data.xlsx', xls, 'binary');
+}
+
+clearDb = function () {
+  fs.readdir(__dirname + '/db/', (err, files) => {
+    files.forEach((file) => {
+      fs.unlink(__dirname + '/db/' + file, (err) => {
+        if (err) throw err;
+      });
+    });
+  });
 }
 
 // Keep reference of main window because of GC
